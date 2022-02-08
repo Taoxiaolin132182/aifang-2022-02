@@ -1,0 +1,207 @@
+ssh-keygen -t rsa -C "taoxiaolin.gw@heyqu.net"
+
+cxfreeze D:/hello.py --target-dir D:/123 --no-copy-deps
+
+mysql -p   
+kt#H@s3AA&qcezJK
+
+试生产1mac:  48b02d05aa36
+试生产2mac:  48b02d134781
+
+48b02d134755
+48b02d05aa5b
+
+@浏览--自起程序日志
+cd /opt/logs/txl01/
+
+cd /mnt/data/opt/logs/txl01/
+tail -100f ctrl.log
+
+@主程序路径
+cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+
+@起主程序ps
+sudo python3 ai_hj_run_service.py
+
+sudo HOME=/home/appuser nohup python3 ai_hj_run_service.py >  /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+sudo HOME=/home/appuser nohup python3 ai_hj_test_service_v2.py >  /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+sudo HOME=/home/appuser nohup python3 daemon.py > /mnt/data/opt/logs/txl01/daemon.log 2>&1 &
+
+/opt/app/ai-product-haijiang/ai-cotton-api-server-release/   autorun.sh
+sleep 5s
+/opt/app/ai-product-haijiang/ai-cotton-api-server-release/autorun.sh &
+
+
+*/1 * * * *  /opt/app/ai-vpn-connect/run.sh > /opt/logs/vpn.log
+
+@陈红AI模型路径
+cd  /opt/app/ai-product-haijiang/aiInferServer
+
+@起AI模型服务指令
+sudo python3 manage.py runserver 0.0.0.0:8000
+
+sudo HOME=/home/appuser nohup python3 manage.py runserver 0.0.0.0:8000 > /opt/logs/txl01/ai.log 2>&1 &
+
+@主目录改写测试路径(测试版几乎成功)
+/opt/app/ai-love-spinning-all/ai-spin-service/aiAllService
+
+
+/opt/app/ai-love-spinning-all/aiInferServer
+############################
+@Ubuntu16.04 系统不识别U盘的解决方案
+@sudo apt-get install exfat-utils
+############################
+@浏览可用的相机IP
+	camera-ip-conf -l 
+@查看rp_filter 参数（该参数会阻拦相机的IP访问）
+	sysctl net.ipv4.conf.all.rp_filter
+@修改rp_filter 参数（断电重启后还是会变回1）
+	sudo sysctl -w net.ipv4.conf.all.rp_filter=0
+@修改相机IP
+	camera-ip-conf set ip=172.16.101.100 gateway=172.16.101.1 subnet=255.255.255.0 -s 39024083
+
+	tcam-gigetool set --ip 172.16.101.100 --netmask 255.255.255.0 --gateway 172.16.101.1 --mode static 39024083
+
+############################
+sudo chmod +x run.sh
+	chmod +x file 来说就是将file改为可执行状态
+
+sudo ./run.sh
+
+
+
+@修改rc.local文件（自启动）
+sudo vim /etc/rc.local
+
+@把该文件设定为可执行
+sudo chmod 755 /etc/rc.local 
+
+
+@Linux上打开tcam-capture
+	1/直接双击图标
+	2/命令行，tcam-capture --reset
+	注意，若是打不开，就需要重新安装，arm的一些库可能比该软件所需的版本更高，导致不能运行
+@Linux上查看映美精相机 
+	tcam-ctrl -h
+@linux安装映美精相机自带软件
+	直接双击打开tiscamera_0.12.0_amd64.deb，安装
+
+程序后台启动
+
+重定向
+
+vim中要写
+	sudo HOME=/home/appuser xxxx
+
+sudo --help
+sudo -H pip3 install django
+
+@管理员执行py文件
+sudo python3 xxx
+
+
+@删除文件夹及其所有包含文件
+sudo rm -rf ./xxx/  
+
+@改文件夹的读写权限
+sudo chmod -R 777 ./xxx
+
+用Windows的cmd 远程（要管理员打开）
+shh appuser@192.168.100.112
+
+远程传文件
+scp C:/user/x/xx/xxx  /opt/model/
+
+scp C:/user/x/xx/xxx  appuser@192.168.100.112：/opt/model
+
+在arm上改py文件
+sudo nano aiInfer.py
+
+
+
+
+sudo apt-get install gawk
+ping 172.16.101.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> a_ping.log &
+ping 172.16.102.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> b_ping.log &
+ping 172.16.103.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> c_ping.log &
+
+ping 172.16.101.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> a_camera_ping.log &
+ping 172.16.102.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> b_camera_ping.log &
+ping 172.16.103.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> c_camera_ping.log &
+
+DFK 33GX264e	Aravis	35024015
+DFK 33GX264e	Aravis	35024027
+DFK 33GX264e	Aravis	35024028
+
+
+@@@测试命令
+===================
+ps -ef|grep python3 
+先把有 “daemon”的进程杀掉：sudo kill -9 xxxx
+再把有 “hj”的进程杀掉：sudo kill -9 xxxx(一般有两个，选下一个进程号就行)
+再去对应文件路径：cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+执行程序：sudo python3 ai_hj_test_service_v2.py
+
+查看运行记录（主要看看，程序是否正常，拍摄次数，有没有相机超时，或PLC通讯中断）
+再开一个命令行
+cd /opt/logs/txl01/
+tail -100f console.log
+======================
+
+
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome!|dd of=34_test.des3
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome@#￥%&*|dd of=34_test.des3
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k We@lc#ome|dd of=34_test.des3
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'Welcome'|dd of=34_test.des3
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'We@lc#o%me'|dd of=34_test.des3
+
+tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=34_test.des3
+dd if=34_test.des3|openssl des3 -d -pbkdf2 -k 'W!e@l&c#^$o%m*e'|tar zxf -
+@打包
+tar -zcvf xxx.tar.gz xxxx(dir)
+tar -zcvf 2021_0701_ssc_ARM1_http_hj_ctrl.tar.gz ai-product-haijiang/
+@解压
+tar -zxvf xxx.tar.gz
+
+sudo tar -zcvf haijiang_ctrl_123.tar.gz ai-product-haijiang/
+sudo tar -zcvf haijiang_ctrl_456.tar.gz ai-product-haijiang/
+
+@linux 上打包python文件
+cxfreeze /mnt/data/data/1test_write/test01_AImodel.py --target-dir  /mnt/data/data/1test_write/b_test0112
+
+@执行文件
+./xxxx
+
+tar -zcf - 1wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome1234|dd of=b_test_wool_yolov3.des3
+1wool_yolov3.pb是原始文件名，Welcome1234是密码(含符号的时候会报错) ，b_test_wool_yolov3是目标文件名
+tar -zcf - xxx|openssl des3 -salt -pbkdf2 -k yyy|dd of=zzz.des3
+
+tar -zcvf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome1234|dd of=a_test_wool_yolov3.des3
+
+dd if=a_test_wool_yolov3.des3|openssl des3 -d -pbkdf2 -k Welcome1234|tar zxf -
+
+sudo chmod -R 777 wool_yolov3.pb
+
+sudo HOME=/home/appuser nohup python3 test01_AImodel.py >  /mnt/data/data/1test_write/start01.log 2>&1
+
+
+
+@@## X-shell 用U盘拷贝
+插入U盘
+	（arm： sudo apt-get install exfat-utils）
+	（U盘：要格式化成exfat）
+	cd /media
+	找到某个盘的属性是 appuser
+	就进入
+	sudo cp -rf /xxxx /yyy
+
+@@##
+查看文件大小
+du -h --max-depth=1  
+
+@@##
+ssh连接
+sudo apt-get install sshpass
+
+sshpass -p 'Welcome!@#' ssh appuser@192.168.1.110
+sshpass -p 'Welcome!@#' ssh appuser@10.246.104.18
