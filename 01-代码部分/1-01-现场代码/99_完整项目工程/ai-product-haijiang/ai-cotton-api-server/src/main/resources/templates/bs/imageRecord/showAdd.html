@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>添加图片表</title>
+</head>
+
+<body>
+
+    <div>
+		<span th:text="${errMsg}" class="err_msg"></span>
+	</div>
+
+    <form class="sui-form form-horizontal" method="post" th:action="@{/bs/imageRecord/add}" th:object="${record}">
+
+    
+        <div class="control-group">
+			<label class="control-label">拍照编号：</label>
+			<div class="controls">
+				<input placeholder="请输入拍照编号" th:field="*{takePhotoId}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">图片地址：</label>
+			<div class="controls">
+				<textarea placeholder="请输入图片地址" class="input-xlarge" th:field="*{imagePath}" style="height: 100px;"></textarea>
+			</div>
+		</div>
+        
+            <div class="control-group">
+                <label class="control-label">拍照开始时间：</label>
+                <div class="controls">
+                    <input autocomplete="off" placeholder="请输入拍照开始时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{photoBeginTime}"
+                        class="input-large input-fat input-date" type="text">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">拍照结束时间：</label>
+                <div class="controls">
+                    <input autocomplete="off" placeholder="请输入拍照结束时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{photoEndTime}"
+                        class="input-large input-fat input-date" type="text">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">调用AI开始时间：</label>
+                <div class="controls">
+                    <input autocomplete="off" placeholder="请输入调用AI开始时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{callAiBeginTime}"
+                        class="input-large input-fat input-date" type="text">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">调用AI结束时间：</label>
+                <div class="controls">
+                    <input autocomplete="off" placeholder="请输入调用AI结束时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{callAiEndTime}"
+                        class="input-large input-fat input-date" type="text">
+                </div>
+            </div>
+            
+        <div class="control-group">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<div class="sui-dropdown dropdown-bordered dropdown-large select">
+					<div class="dropdown-inner">
+						<a role="button" data-toggle="dropdown" href="javascript:void(0);" class="dropdown-toggle"> <input th:field="*{state}" type="hidden" />
+                            <i class="caret"></i>
+                            <span th:switch="*{state}">
+                                <span th:case="0">无效</span>
+                                
+                                <span th:case="1">有效</span>
+                                
+                                <span th:case="*">请选择</span>
+						    </span>
+						</a>
+						<ul role="menu" aria-labelledby="drop2" class="sui-dropdown-menu">
+                            <li role="presentation" th:class="*{state eq null} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="">请选择</a></li>
+                    <li role="presentation" th:class="*{state eq 0} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="0">无效</a></li>
+                    
+                    <li role="presentation" th:class="*{state eq 1} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">有效</a></li>
+                    
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+            <div class="control-group submit_btn">
+        <div class="controls">
+            <button class="sui-btn btn-bordered btn-large btn-primary" type="submit">添加</button>
+        </div>
+    </div>
+
+    </form>
+
+</body>
+</html>

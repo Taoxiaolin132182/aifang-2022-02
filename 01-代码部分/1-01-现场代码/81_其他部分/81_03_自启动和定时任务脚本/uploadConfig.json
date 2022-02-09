@@ -1,0 +1,43 @@
+{
+    "belongBusiness": "wxmfc",
+    "uploadImagePath": ["/opt/data/upload_image/"],
+    "uploadTables": [
+        {
+            "tableName": "db_cotton_local.t_image_record",
+            "indexKey": "update_time",
+            "type": "str"
+        },
+        {
+            "tableName": "db_cotton_local.t_point_record",
+            "indexKey": "update_time",
+            "type": "str"
+        },
+        {
+            "tableName": "db_cotton_local.t_take_photo_record",
+            "indexKey": "update_time",
+            "type": "str"
+        },
+        {
+            "tableName": "db_cotton_local.t_err_record",
+            "indexKey": "update_time",
+            "type": "str"
+        },
+        {
+            "tableName": "db_cotton_local.t_batch",
+            "indexKey": "create_time",
+            "type": "str"
+        },
+        {
+            "tableName": "db_cotton_local.t_supplier",
+            "indexKey": "number",
+            "type": "str"
+        }
+    ],
+    "DBConfig": {
+        "HOST": "localhost",
+        "PORT": 3306,
+        "DBNAME": "db_cotton_local",
+        "USER": "appuser",
+        "PASSWORD": "kt#H@s3AA&qcezJK"
+    }
+}

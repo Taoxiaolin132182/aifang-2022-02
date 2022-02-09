@@ -1,0 +1,53 @@
+
+# 简便操作步骤：
+    1、把 .bash_aliases 传入根目录
+        sudo chmod 777 .bash_aliases(可做可不做)
+    2、vim .bashrc 查看时候有关于 .bash_aliases 的 if 判断执行
+    3、在根目录下 执行 source .bashrc
+
+    列表
+        af-path   # 进入主程序路径
+        af-log    # 进入log对应路径
+        af-ctrl   # 执行 查杀起脚本文件
+        af-look1  # 查看 console
+        af-look2  # 查看 we_need_record
+
+    4、使用 af-path
+        把  kill_or_start_aifang_code.py 传入 主程序路径
+        sudo chmod 777 ki...
+
+
+
+@ 研究 ubantu 自定义命令
+        1、在用户路径下，编辑 .bashrc
+            cd ~
+            vim .bashrc
+            添加 alias af-log='cd /opt/logs/txl01/'
+        2、到根目录下，内建命令，启动 .bashrc
+            cd ~
+            source .bashrc
+        3、取消
+            vim 屏蔽 .bashrc 里面添加的内容
+            cd ~
+            source .bashrc
+            还要重启ARM 后，才能生效
+        另一种：
+            1、在 .bashrc 中，添加：
+                if [ -f ~/.bash_aliases ]; then
+                    . ~/.bash_aliases
+                fi
+            2、创建 .bash_aliases
+                cd ~
+                sudo touch .bash_aliases
+                sudo chmod 777 .bash_aliases
+                vim .bash_aliases
+                    #simple cmd
+                    alias af-path='cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/'
+                    alias af-ctrl='sudo python3 /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/kill_or_start_aifang_code.py'
+                    alias af-log='cd /opt/logs/txl01/'
+                    alias af-look1='tail -100f console.log'
+                    alias af-look2='tail -100f we1_need_record.log'
+            3、取消
+                去掉.bash_aliases
+                source .bashrc
+                重启

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>拍照表</title>
+</head>
+
+<body>
+
+    <div class="sui-form form-horizontal" th:object="${record}">
+    
+        <div class="control-group">
+			<label class="control-label">拍照编号：</label>
+			<div class="controls">
+				<span th:text="*{takePhotoId}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">批次：</label>
+			<div class="controls">
+				<span th:text="*{batchNo}"></span>
+			</div>
+		</div>
+        
+            <div class="control-group">
+                <label class="control-label">拍照开始时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(photoBeginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">拍照结束时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(photoEndTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">调用AI开始时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(callAiBeginTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">调用AI结束时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(callAiEndTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">添加时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">更新时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+        <div class="control-group">
+            <label class="control-label">状态：</label>
+            <div class="controls" th:switch="*{state}">
+        
+                <span th:case="0">无效</span>
+            
+                <span th:case="1">有效</span>
+            
+                <span th:case="*">&nbps;</span>
+            </div>
+        </div>
+            </div>
+
+</body>
+</html>

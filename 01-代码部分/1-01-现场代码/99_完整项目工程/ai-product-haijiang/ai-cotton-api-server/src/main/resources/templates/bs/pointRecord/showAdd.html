@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>添加点位表</title>
+</head>
+
+<body>
+
+    <div>
+		<span th:text="${errMsg}" class="err_msg"></span>
+	</div>
+
+    <form class="sui-form form-horizontal" method="post" th:action="@{/bs/pointRecord/add}" th:object="${record}">
+
+
+        <div class="control-group">
+			<label class="control-label">拍照编号：</label>
+			<div class="controls">
+				<input placeholder="请输入拍照编号" th:field="*{takePhotoId}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">图片编号：</label>
+			<div class="controls">
+				<input placeholder="请输入图片编号" th:field="*{imageId}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">传送带速度：</label>
+			<div class="controls">
+				<input placeholder="请输入传送带速度" th:field="*{speed}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的最大x坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的最大x坐标" th:field="*{pointXmax}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的最大y坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的最大y坐标" th:field="*{pointYmax}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的最小x坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的最小x坐标" th:field="*{pointXmin}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的最小y坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的最小y坐标" th:field="*{pointYmin}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的中心x坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的中心x坐标" th:field="*{pointXcenter}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">点的中心y坐标：</label>
+			<div class="controls">
+				<input placeholder="请输入点的中心y坐标" th:field="*{pointYcenter}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<div class="sui-dropdown dropdown-bordered dropdown-large select">
+					<div class="dropdown-inner">
+						<a role="button" data-toggle="dropdown" href="javascript:void(0);" class="dropdown-toggle"> <input th:field="*{state}" type="hidden" />
+                            <i class="caret"></i>
+                            <span th:switch="*{state}">
+                                <span th:case="1">新增</span>
+
+                                <span th:case="3">重复</span>
+
+                                <span th:case="4">成功抓取</span>
+
+                                <span th:case="5">来不及抓取</span>
+
+                                <span th:case="*">请选择</span>
+						    </span>
+						</a>
+						<ul role="menu" aria-labelledby="drop2" class="sui-dropdown-menu">
+                            <li role="presentation" th:class="*{state eq null} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="">请选择</a></li>
+                    <li role="presentation" th:class="*{state eq 1} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">新增</a></li>
+
+                    <li role="presentation" th:class="*{state eq 3} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">重复</a></li>
+
+                    <li role="presentation" th:class="*{state eq 4} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">成功抓取</a></li>
+
+                    <li role="presentation" th:class="*{state eq 5} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">来不及抓取</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        <div class="control-group">
+			<label class="control-label">是否删除：</label>
+			<div class="controls">
+				<div class="sui-dropdown dropdown-bordered dropdown-large select">
+					<div class="dropdown-inner">
+						<a role="button" data-toggle="dropdown" href="javascript:void(0);" class="dropdown-toggle"> <input th:field="*{isDel}" type="hidden" />
+                            <i class="caret"></i>
+                            <span th:switch="*{isDel}">
+                                <span th:case="0">是</span>
+
+                                <span th:case="1">否</span>
+
+                                <span th:case="*">请选择</span>
+						    </span>
+						</a>
+						<ul role="menu" aria-labelledby="drop2" class="sui-dropdown-menu">
+                            <li role="presentation" th:class="*{isDel eq null} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="">请选择</a></li>
+                    <li role="presentation" th:class="*{isDel eq 0} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="0">是</a></li>
+
+                    <li role="presentation" th:class="*{isDel eq 1} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">否</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+            <div class="control-group submit_btn">
+        <div class="controls">
+            <button class="sui-btn btn-bordered btn-large btn-primary" type="submit">添加</button>
+        </div>
+    </div>
+
+    </form>
+
+</body>
+</html>

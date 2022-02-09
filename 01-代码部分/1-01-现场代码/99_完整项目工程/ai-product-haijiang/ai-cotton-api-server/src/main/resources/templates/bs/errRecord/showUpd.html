@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/header::header(~{::title})">
+<title>修改</title>
+</head>
+
+<body>
+
+    <form class="sui-form form-horizontal" method="post" th:action="@{/bs/errRecord/upd}" th:object="${record}">
+    
+            <div class="control-group">
+                <label class="control-label">自增主键：</label>
+                <div class="controls">
+                    <span th:text="*{id}"></span> <input type="hidden" th:field="*{id}" />
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">异常代码：</label>
+                <div class="controls">
+                    <input placeholder="请输入异常代码" th:field="*{errCode}" class="input-xlarge input-fat" type="text">
+                </div>
+            </div>
+            
+                <div class="control-group">
+                    <label class="control-label">异常时间：</label>
+                    <div class="controls">
+                        <input autocomplete="off" placeholder="请输入异常时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{errTime}"
+                            class="input-large input-fat input-date" type="text" />
+                    </div>
+                </div>
+                
+            <div class="control-group">
+                <label class="control-label">添加时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">更新时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">代码说明：</label>
+                <div class="controls">
+                    <input placeholder="请输入代码说明" th:field="*{errInstructions}" class="input-xlarge input-fat" type="text">
+                </div>
+            </div>
+            
+    <div class="control-group submit_btn">
+        <div class="controls">
+            <button class="sui-btn btn-bordered btn-large btn-primary" type="submit">修改</button>
+        </div>
+    </div>
+
+    </form>
+
+</body>
+</html>

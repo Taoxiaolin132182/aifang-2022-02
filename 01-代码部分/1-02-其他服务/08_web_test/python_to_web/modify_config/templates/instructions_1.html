@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>instructions</title>
+    <style>
+        table, table tr th, table tr td { border:2px solid black}
+        table{
+            border-collapse: collapse;
+            margin: 0 auto;
+            cellspacing: 2px;
+        }
+        td{height: 30px; width: 750px; font-family: KaiTi; font-size:150%}
+    </style>
+</head>
+<body>
+    {{ data_1.0|safe }} || {{ data_1.1|safe }} || {{ data_1.2|safe }} || {{ data_1.3|safe }}
+    <pre> </pre>
+    <pre> </pre>
+    <table>
+        <tr>
+            <td style="background-color:#70f3ff">1、先确定抓手原点位置，X方向，Y方向</td>
+        </tr>
+        <tr>
+            <td style="background-color:#70f3ff">2、参数项可录入正负号：(+\-)</td>
+        </tr>
+        <tr>
+            <td style="background-color:#e3f9fd">3、X(单位:mm)：X值越大，抓手的落点就离原点越远</td>
+        </tr>
+        <tr>
+            <td style="background-color:#e3f9fd">4、Y(单位:mm)：Y值越大，抓手抓的越晚(从抓取时机来看)</td>
+        </tr>
+        <tr>
+            <td style="background-color:#e3f9fd">5、T(单位:s)：T值越大，抓手抓的越早(减小t参数时，抓取的点变得更前(相当于去提前抓))</td>
+        </tr>
+        <tr>
+            <td style="background-color:#a4e2c6">6、T参数的换算公式： 目测统计后的Y方向偏差 / 传送带速度</td>
+        </tr>
+        <tr>
+            <td style="background-color:#a4e2c6">7、传送带速度：在PLC屏幕上的传送带频率 * 比率系数({{ data_1.4 }})</td>
+        </tr>
+
+    </table>
+</body>
+</html>

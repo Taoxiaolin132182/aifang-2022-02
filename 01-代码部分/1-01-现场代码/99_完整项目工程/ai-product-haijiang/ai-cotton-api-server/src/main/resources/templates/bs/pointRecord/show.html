@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>点位表</title>
+</head>
+
+<body>
+
+    <div class="sui-form form-horizontal" th:object="${record}">
+    
+        <div class="control-group">
+			<label class="control-label">自增主键：</label>
+			<div class="controls">
+				<span th:text="*{pointId}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">拍照编号：</label>
+			<div class="controls">
+				<span th:text="*{takePhotoId}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">图片编号：</label>
+			<div class="controls">
+				<span th:text="*{imageId}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">传送带速度：</label>
+			<div class="controls">
+				<span th:text="*{speed}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的最大x坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointXmax}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的最大y坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointYmax}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的最小x坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointXmin}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的最小y坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointYmin}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的中心x坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointXcenter}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">点的中心y坐标：</label>
+			<div class="controls">
+				<span th:text="*{pointYcenter}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+            <label class="control-label">状态：</label>
+            <div class="controls" th:switch="*{state}">
+        
+                <span th:case="1">新增</span>
+            
+                <span th:case="3">重复</span>
+            
+                <span th:case="4">成功抓取</span>
+            
+                <span th:case="5">来不及抓取</span>
+            
+                <span th:case="*">&nbps;</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">是否删除：</label>
+            <div class="controls" th:switch="*{isDel}">
+        
+                <span th:case="0">是</span>
+            
+                <span th:case="1">否</span>
+            
+                <span th:case="*">&nbps;</span>
+            </div>
+        </div>
+        
+            <div class="control-group">
+                <label class="control-label">添加时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">更新时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+                </div>
+
+</body>
+</html>

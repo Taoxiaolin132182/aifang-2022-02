@@ -1,0 +1,773 @@
+# coding=utf-8
+====  最常用指令  =====================================
+    @ 后台登录账号
+        taoxiaolin.gw@heyqu.net
+    @ mysql -p
+        kt#H@s3AA&qcezJK
+
+    @主程序路径
+        cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+    @起主程序
+        sudo python3 ai_hj_run_service.py
+
+        sudo HOME=/home/appuser nohup python3 ai_hj_run_service.py >  /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+        sudo HOME=/home/appuser nohup python3 ai_hj_test_service_v2.py >  /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+        sudo HOME=/home/appuser nohup python3 daemon.py > /mnt/data/opt/logs/txl01/daemon.log 2>&1 &
+    @AI模型路径
+        cd /opt/app/ai-product-haijiang/aiInferServer
+    @起AI模型服务指令
+        sudo python3 manage.py runserver 0.0.0.0:8000
+        sudo HOME=/home/appuser nohup python3 manage.py runserver 0.0.0.0:8000 > /opt/logs/txl01/ai.log 2>&1 &
+
+====  Linux_ubantu 一般知识  =====================================
+    @ Ubuntu16.04 系统不识别U盘的解决方案
+        sudo apt-get install exfat-utils
+
+    @@## X-shell 用U盘拷贝
+        插入U盘
+        （arm： sudo apt-get install exfat-utils）
+        （U盘：要格式化成exfat）
+        cd /media
+        找到某个盘的属性是 appuser
+        就进入
+        sudo cp -rf /xxxx /yyy
+
+    @打包
+        tar -zcvf xxx.tar.gz xxxx(dir)
+        tar -zcvf 2021_0701_ssc_ARM1_http_hj_ctrl.tar.gz ai-product-haijiang/
+    @解压
+        tar -zxvf xxx.tar.gz
+
+    @ 查看文件大小
+        du -h --max-depth=1
+
+    @ python-执行命令行指令
+        python调用Shell脚本或者是调用系统命令，有两种方法：
+        os.system(cmd)或os.popen(cmd)
+        os.system(cmd)：返回值是脚本的退出状态码，
+        os.popen(cmd)：返回值是脚本执行过程中的输出内容。
+        实际使用时视需求情况而选择。
+
+    @ 使用./sh脚本的注意事项
+        1、书写格式：
+            #!/bin/bash
+            cd /mnt/data/data/t_PCI/
+            export PATH=$PATH:/usr/local/cuda-10.0/bin
+            echo $PATH
+            HOME=/home/appuser
+            nohup /usr/bin/python3.6  search_hardware.py > /opt/logs/search_pci.log 2>&1
+        2、执行命令：
+            赋予权限，./run.sh + 回车
+        3、注意 相关的 log 的权限问题：
+            sudo 直接手动执行.py脚本时，无异常
+            但通过./run.sh脚本执行时，需要将相关的log赋予权限
+
+
+    @ ssh连接--(套娃功能--已知现场arm的固定IP，且有一个远程IP可用)
+        sudo apt-get install sshpass
+
+        sshpass -p 'Welcome!@#' ssh appuser@192.168.1.110
+        sshpass -p 'Welcome!@#' ssh appuser@10.246.104.18
+
+        现象总结：
+            使用上述指令登录的话，首次连接需要先手动最简登录
+                ssh appuser@192.168.1.110
+                根据提示，输入yes , 还有密码
+            再次想登录时，可以成功使用
+
+
+    @ 查看python库的版本
+        pip3 list -- python库的版本
+        pip3 freeze -- python库的版本-详细
+            @老版本
+                tensorflow-estimator          1.13.0
+                tensorflow-gpu                1.13.1+nv19.5
+                tensorrt                      5.1.6.1
+            @新版本
+                tensorflow                    1.15.4+nv20.12
+                tensorflow-estimator          1.15.1
+                tensorrt                      7.1.3.0
+
+
+
+    @ 查看Linux cpu 情况 (几个cpu,几核)  --2021--07-06
+        lscpu
+
+    @ 重启Linux的网络服务(ubantu18.04)   --2021--07-07
+        sudo service networking restart
+
+        @ 修改 网卡对应文件(暂未成功)   --2021--07-07
+            cd /etc/network/
+            sudo chmod 777 interfaces
+            vim interfaces
+                auto eth0
+　　                 iface eth0 inet dhcp
+            sudo ifconfig eth0 down    --关网卡
+            sudo ifconfig eth0 down    --开网卡
+            sudo service networking restart
+            ping www.baidu.com   --检查是否联通网络
+
+    @ 误改了sudoer,恢复
+        要在本机上执行，不能在X-shell上，会无效
+            pkexec chmod 0440 /etc/sudoers
+
+    @挂载硬盘设置
+        sudo vim /etc/fstab
+    @选择编辑器
+        sudo select-editor
+    @Ubuntu 安装curl
+        apt curl
+        sudo apt install curl
+
+
+    @ 浏览可用的相机IP
+        camera-ip-conf -l
+    @ 查看rp_filter 参数（该参数会阻拦相机的IP访问）
+        sysctl net.ipv4.conf.all.rp_filter
+    @ 修改rp_filter 参数（断电重启后还是会变回1）
+        sudo sysctl -w net.ipv4.conf.all.rp_filter=0
+    @ 修改相机IP
+        camera-ip-conf set ip=172.16.101.100 gateway=172.16.101.1 subnet=255.255.255.0 -s 39024083
+        tcam-gigetool set --ip 172.16.101.100 --netmask 255.255.255.0 --gateway 172.16.101.1 --mode static 39024083
+
+    @Linux上打开tcam-capture
+        1/直接双击图标
+        2/命令行，tcam-capture --reset
+        注意，若是打不开，就需要重新安装，arm的一些库可能比该软件所需的版本更高，导致不能运行
+    @Linux上查看映美精相机
+        tcam-ctrl -l
+    @linux安装映美精相机自带软件
+        直接双击打开tiscamera_0.12.0_amd64.deb，安装
+
+    @ 将file改为可执行状态
+        sudo chmod +x run.sh
+        chmod +x file 来说就是将file改为可执行状态
+
+    @ 用Windows的cmd 远程（要管理员打开）
+        shh appuser@192.168.100.112
+    @ 远程传文件
+        scp C:/user/x/xx/xxx  /opt/model/
+        scp C:/user/x/xx/xxx  appuser@192.168.100.112：/opt/model
+
+
+    @ 打包加密文件
+        cxfreeze D:/hello.py --target-dir D:/123 --no-copy-deps
+
+    @ 浏览--自起程序日志
+        cd /opt/logs/txl01/
+        tail -100f ctrl.log
+
+    @ /etc/rc.local
+        sleep 5s
+        /opt/app/ai-product-haijiang/ai-cotton-api-server-release/autorun.sh &
+    @ sudo crontab -e
+        */1 * * * *  /opt/app/ai-vpn-connect/run.sh > /opt/logs/vpn.log
+
+    @ 主目录改写测试路径(测试版几乎成功)
+        /opt/app/ai-love-spinning-all/ai-spin-service/aiAllService
+
+        /opt/app/ai-love-spinning-all/aiInferServer
+
+    @ 修改rc.local文件（自启动）
+        sudo vim /etc/rc.local
+
+    @ 把该文件设定为可执行
+        sudo chmod 755 /etc/rc.local
+
+    @vim中要写
+        sudo HOME=/home/appuser xxxx
+
+    @管理员执行py文件
+        sudo python3 xxx
+
+    @删除文件夹及其所有包含文件
+        sudo rm -rf ./xxx/
+
+    @改文件夹的读写权限
+        sudo chmod -R 777 ./xxx
+
+    @ 进入root目录
+        cd ~
+        sudo su
+
+    @浏览本地磁盘
+        df -h
+
+    @
+        sudo apt-get install gawk
+        ping 172.16.101.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> a_ping.log &
+        ping 172.16.102.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> b_ping.log &
+        ping 172.16.103.1 | awk '{ print $0"\t" strftime("%c",systime()) }'> c_ping.log &
+
+        ping 172.16.101.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> a_camera_ping.log &
+        ping 172.16.102.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> b_camera_ping.log &
+        ping 172.16.103.100 | awk '{ print $0"\t" strftime("%c",systime()) }'> c_camera_ping.log &
+
+
+    @@@测试命令
+        ps -ef|grep python3
+        先把有 “daemon”的进程杀掉：sudo kill -9 xxxx
+        再把有 “hj”的进程杀掉：sudo kill -9 xxxx(一般有两个，选下一个进程号就行)
+        再去对应文件路径：cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+        执行程序：sudo python3 ai_hj_test_service_v2.py
+
+        查看运行记录（主要看看，程序是否正常，拍摄次数，有没有相机超时，或PLC通讯中断）
+        再开一个命令行
+        cd /opt/logs/txl01/
+        tail -100f console.log
+
+
+    @打包加密
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome!|dd of=34_test.des3
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome@#￥%&*|dd of=34_test.des3
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k We@lc#ome|dd of=34_test.des3
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'Welcome'|dd of=34_test.des3
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'We@lc#o%me'|dd of=34_test.des3
+
+        tar -zcf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=34_test.des3
+    @解密解压
+        dd if=34_test.des3|openssl des3 -d -pbkdf2 -k 'W!e@l&c#^$o%m*e'|tar zxf -
+
+    @linux 上打包python文件
+        cxfreeze /mnt/data/data/1test_write/test01_AImodel.py --target-dir  /mnt/data/data/1test_write/b_test0112
+
+    @执行文件
+        ./xxxx
+    @
+        tar -zcf - 1wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome1234|dd of=b_test_wool_yolov3.des3
+            1wool_yolov3.pb是原始文件名，Welcome1234是密码(含符号的时候会报错) ，b_test_wool_yolov3是目标文件名
+        tar -zcf - xxx|openssl des3 -salt -pbkdf2 -k yyy|dd of=zzz.des3
+
+        tar -zcvf - wool_yolov3.pb|openssl des3 -salt -pbkdf2 -k Welcome1234|dd of=a_test_wool_yolov3.des3
+
+        dd if=a_test_wool_yolov3.des3|openssl des3 -d -pbkdf2 -k Welcome1234|tar zxf -
+
+        sudo chmod -R 777 wool_yolov3.pb
+
+        sudo HOME=/home/appuser nohup python3 test01_AImodel.py >  /mnt/data/data/1test_write/start01.log 2>&1
+
+
+====  加密模型--相关  =====================================
+    @ 安装 cx_freeze --linux系统
+        先解压
+        sudo python3 setup.py build
+        sudo python3 setup.py install
+        查看版本
+        cxfreeze --version
+
+
+    @ AI模型开机加密
+
+        @ 加密打包
+            tar -zcf - Awool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=tianyu_AI_test.des3
+            tar -zcf - cotton_model.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=wuxi_AI_test.des3
+            @ 2021-07-27
+                cd /mnt/data/data/aimodel/
+                sudo tar -zcf - Awool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=tianyu_AI_model_A.des3
+                sudo tar -zcf - Bwool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=tianyu_AI_model_B.des3
+
+        @linux 上打包python文件
+            cxfreeze /mnt/data/data/1test_write/test01_AImodel.py --target-dir /mnt/data/data/1test_write/b_test0112
+
+    @在公司测试机上（个人测试-常州卓郎）
+        将原始.py文件，拖进	 /mnt/data/data/2test_remove/
+            cd /mnt/data/data/2test_remove/
+
+            cxfreeze /mnt/data/data/2test_write/cotton_AImodel.py --target-dir  /mnt/data/data/2test_write/b_test0112
+                tar -zcvf 0129_cotton_and_wool_run_aimodel.tar.gz b_test0112/
+
+            cxfreeze /mnt/data/data/2test_remove/wool_AImodel.py --target-dir /mnt/data/data/2test_remove/c_test0112
+                sudo tar -zcvf 0727_wool_run_aimodel.tar.gz c_test0112/
+
+    @进目标远程主机，
+        cd /media/data/0114_test_AI_find/
+        将打包文件拖进去，
+        解压文件
+        tar -zxvf run_aimodel.tar.gz
+
+        cd b_test0112/
+        sudo ./test01_AImodel
+
+        cd /media/data/model/v2.5_20201203
+
+    @ /etc/rc.local 中的指令添加
+        sleep 12s
+
+        #进入解密路径
+        cd /mnt/data/data/2test_remove/b_test0112/
+
+        #起解密程序指令
+        sudo HOME=/home/appuser nohup ./cotton_AImodel > /opt/logs/txl01/decode.log 2>&1 &
+
+
+        sleep 12s
+
+        #进入解密路径
+        cd /mnt/data/data/2test_remove/c_test0112/
+
+        #起解密程序指令
+        sudo HOME=/home/appuser nohup ./wool_AImodel > /opt/logs/txl01/decode.log 2>&1 &
+
+
+
+
+
+
+
+
+====  windows_cmd  =====================================
+    @ 注意：使用Tab ，补全文件名
+    @进入某个盘
+	    d:
+    @进入文件夹
+	    cd xxx
+    @显示该路径下所有子目录
+	    dir
+    @创建文件夹
+	    mkdir xxx
+    @删除
+
+    @将本路径下的xxx.ui文件，转成py文件
+	    pyuic5 -o name.py name.ui         <-o是字母o>
+    @Win键+X键 ,2键松开再按I键，调出Windows PowerShell窗口
+
+====  git 相关  =====================================
+    @只有公司内网，或是远程VPN进入公司内网才行
+
+    @艾豚git 网址
+        https://gitlab.gmm01.com/ai-dev
+    @个人账号
+        taoxiaolin.gw@heyqu.net
+    @密码
+        Sean@123456
+    @在smartgit-工具-open in Terminal
+        git status
+        git pull
+
+        git submodule init
+        git submodule update
+
+
+
+====  现场问题积累  =====================================
+    @2021-03-29
+        问题描述：
+            公司艾智检C型机，4G上网非常慢，使用有线连接不能上网，且Xshell能连接，但一传输文件就断开
+        解决途径：
+            vim /etc/resolv.conf
+            写入：nameserver 192.168.102.81
+            在命令行中查看上网的返回地址
+                nslookup www.baidu.com
+                Address: 192.168.102.82
+
+====  ARM装机准备  =====================================
+    @映美精软件
+        tiscamera_0.12.0_arm64.deb
+
+    @ /etc/rc.local
+        sudo chmod -R 777 rc.local
+
+    @ sudo crontab -e
+        * */3 * * *  find /mnt/data/data/image_original/ -name "*" -mtime +1 -exec rm -rf {} \;
+
+        * */3 * * *  find /mnt/data/data/image/havebox/ -name "*" -mtime +1 -exec rm -rf {} \;
+
+        * */3 * * *  find /mnt/data/data/image/nobox/ -name "*" -mtime +1 -exec rm -rf {} \;
+
+        * */3 * * *  find /mnt/data/data/upload_image/ -name "*" -mtime +1 -exec rm -rf {} \;
+
+    @ 软链接
+        ln -s /mnt/data/data data
+
+    @ VPN的配置
+        1，在本机ifconfig ,在eth0中，找到MAC地址，去掉：
+            48b02d134755
+            48b02d05aa36
+            48b02d134781
+            在/opt/config/mac_addr.conf,  vim mac_addr.conf,改掉mac地址
+        2，在后台页面上，对应的项中，改掉mac地址
+        3，重启，完成
+    @上传图片的配置
+        1，在本机的/opt/config/uploadConfig.json，vim uploadConfig.json,
+        改掉 “sjht”--"wool"
+        2,改掉路径（后台上的批次名称，是图片的上一级文件夹名称）
+
+    @确认文件夹的路径
+        /mnt/data/data/aimodel (.pb文件，和.txt文件（陈红AI调用）)
+        /mnt/data/data/image/havebox/
+        /mnt/data/data/image/nobox/
+        /mnt/data/data/image_original/
+        /mnt/data/data/log_txl/
+        /mnt/data/data/upload_image/
+        /mnt/data/opt/logs/
+
+        sudo mkdir -p /opt/logs/ai-product-haijiang/ai-cotton-api-server-release(查询sql的服务要用到)
+        /opt/logs/txl01/(重定向文件所需)
+
+        ai-cotton-api-server-release
+
+====  pip镜像源  =====================================
+    @阿里云
+        pip install xxx -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+        pip3 install xxx -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+    @清华源
+        pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+
+        pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package
+    @装PIL模块：   pip3 install pillow
+
+    @装GPIO模块： sudo pip3 install Jetson.GPIO
+
+    @装serial模块： sudo pip3 install pyserial
+
+    @装mysql模块： sudo pip3 install pymysql
+
+    @装psutil模块： sudo pip3 install psutil
+
+====  访问NFS_图片数库  =====================================
+    @1、我的电脑，计算机，映射网络驱动器，
+    @2、在文件夹栏中，写入： \\10.246.156.65
+    @3、点击浏览，点击IP地址上的下拉，选中“images4code”
+    @4、点击确定，添加完成
+====  远程控制  =====================================
+     @生成密钥
+         ssh-keygen -t rsa -C "taoxiaolin.gw@heyqu.net"
+         一路“enter”到底
+
+     @ 查看公钥
+          cat /c/Users/Administrator/.ssh/id_rsa.pub
+     @查看私钥
+          cat /c/Users/Administrator/.ssh/id_rsa
+
+    @公钥获取方法
+        在电脑的cmd上输入命令：
+            ssh-keygen -t rsa -C "taoxiaolin.gw@heyqu.net"
+
+            生成在 (C:\Users\taoxiaolin.gw/.ssh/id_rsa):
+            ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCs6KJKsk5MUwPcTrzjWa+k7R7rZlpX+vXvrP5Zdy8N1fh4bXPKAIkcj46Lfe374W5O7
+            GYPslADEmlCuUC8aWTZ7ybfUvW6eaz9/8MR5q8cUpONfoxhPEBUzpaweINZHSkqz8l104GOD5AJxyrMzPuC9mhl53y2tNgkXb1x/C67dN
+            0yImrZbs9VH9Uk+ivuTygvXHo/iMPPdnVqeYCRDSBroamMAJaccS8IiNtsKWmw1hig69J4ShtsNrUZ6jllliFzslQaAE2KMSZS77tSuzy
+            oBrUkchg0CQLevyucge/YdoVPGq+k9dgfX5/KkDlJe3Fa+76tY8CROLsv70ooPhU/ taoxiaolin.gw@heyqu.net
+
+    @（看日志的）
+    @ssh堡垒机的访问权限都开了
+        IP：47.101.175.241
+        端口：60022
+
+        陶晓林
+        taoxiaolin
+
+    @(看数据库的)
+    @window远程桌面跳板机的权限也都开好了
+        地址：47.101.175.241:63389
+        访问线上数据在跳板机上访问
+        window远程桌面用户名和密码
+
+        陶晓林
+        taoxiaolin
+        ZZkr#^&n2lLf
+        Sean@345
+
+    @all：
+        AI相关的数据都已经移到阿里云的RDS上，只读访问方式：
+        登录跳板机远程桌面
+        在跳板机上访问数据库，相关信息如下：
+        数据库地址：rm-uf68cg3ezhnzsi2o735970.mysql.rds.aliyuncs.com
+        用户名：readonly
+        密码：SM5tP$DjjQ1Jsj6I
+
+====  4G路由器的设定  =====================================
+    @板子连接12V电压
+
+    @一开始连接，线通过网线插入中间网口，连接电脑
+        Win+S唤出面板，cmd ,ipconfig
+        显示的默认网关就是路由器的IP地址
+
+    @网页登陆IP地址，默认初始化期间，无管理员登陆密码，直接登陆
+
+    @在system-system-language and style上，可以更改界面语言为中文
+
+    @root用户登陆密码：A1D0ph1n
+
+    @启用4G卡，上网
+        在network-interfaces，在下面点击“add new interfaces”
+        填入名称，在“protocol of the new interface”选择 UMTS/GPRS/EV-DO
+        点击确认“Submit”
+        进入新增的“interface",在"general setup"  -"protoco"l选“ UMTS/GPRS/EV-DO”
+            ”Modem device“选”/dev/ttyUSB2“
+            "Service Type"选”UMTS/GPRS“
+        在Firewall Setting 选择”wan“
+
+    @WIFI密码的设定
+        在”网络“-”无线“界面，点击第一行的wifi1,wifi0进行设置
+            在接口配置--无线安全中，”加密“选”WPA2-PSK“,"算法"为自动
+
+    @arm想同时连接PLC的局域网，及上外网
+        网口端接入PLC所在局域网，
+        USB转网口端接入4G路由板，
+        局域网和4G路由板不能在同一网段，如大家都是192.168.1.1，
+        建议把4G路由板的IP段改掉
+
+    @配置路由器IP地址，在网络-接口，“LAN”-“基本配置”上修改
+        无锡远纺这边为：192.168.1.11
+
+    @ipconfig
+        网关就是路由器IP
+
+====  agx引脚触发，ubantu关机  =====================================
+    @引脚线J504的1和4
+
+    @开启时，引脚短接
+
+    @关闭时，引脚短接，但是：
+        1、不进入用户，关机不了，
+        2、进入用户时，关机会有关机选择项，卡住关机进程
+
+    @arm与放大板要用杜邦线连接，不能使用“杜邦线锡焊其他线”(即使用万用表测量合格也不行)，
+    @测试ARM上的GPIO单独电压变化，需要借助放大板（触发板），需要接负载：（2号引脚接1，12号引脚接com）：低电平红灯亮，高电平灯灭
+    @sudo python3
+        import RPi.GPIO
+        要是没什么提示，就是正常的
+
+    @相机设定部分：
+	    触发模式（mode）:要是 on
+	    触发来源：software 是软件-触发
+		     line1 是触发线-触发
+
+    @现场现象：
+	    当相机触发接受方式为“上升沿”，无人为触发时，可能是电压扰动，相机会被时不时的触发拍照
+	    当相机触发接受方式为“下降沿”，上述现象消失，感觉扰动消失
+
+    @ GPIO 程序部分
+        GPIO.setmode(GPIO.BCM) #一般用的模式
+            一般物理引脚接2-12，程序上引脚号为18（18会传递给12，来发生变化）
+            使用上升沿时，初始化：GPIO.HIGH,  平时触发：GPIO.LOW --GPIO.HIGH
+            使用上升沿时，初始化：GPIO.LOW,  平时触发：GPIO.HIGH --GPIO.LOW
+
+            GPIO.setmode(GPIO.BOARD) #调试检验时，使用的模式
+            GPIO.setup(12,GPIO.OUT)
+            GPIO.output(led_pin, GPIO.LOW)
+            GPIO.output(led_pin, GPIO.HIGH)
+
+    @ubuntu 自动登陆
+        https://jingyan.baidu.com/article/6b182309e61872ba58e1593d.html
+
+    @设置关机按钮为shutdown
+        gsettings set org.gnome.settings-daemon.plugins.power button-power shutdown
+
+    @设置，取消关机选择界面
+        gsettings set com.canonical.indicator.session suppress-logout-restart-shutdown true
+        gsettings set org.gnome.SessionManager logout-prompt false
+
+    @要设置自动登陆：login (在detiel,用户里设置)
+
+    @要设置不自动锁定：在Lock 上设置
+
+    @要设置不自动黑屏：在power里，blank screen:off
+
+    @一般关机时，需要进行关机选择，用下面的命令更改
+        gsettings set com.canonical.indicator.session suppress-logout-restart-shutdown true
+        gsettings set org.gnome.SessionManager logout-prompt false
+
+====  与PLC通讯 相关  =====================================
+    @和PLC连接，PLC端设置好IP，端口，MC协议，录入现场PLC后，需要断电重启，
+        否则是ping的通，但是程序会返回 [Errno 111] Connection refused
+    @通讯在同一网段上，PLC提供端口号：10001，10002，10003，10004
+
+    @若arm使用10002与PLC建立通讯，则其他设备（如触摸屏，不能再使用10002端口），
+        否则会出现：能建立连接，但读取，写入都失败的现象（即，端口冲突）
+
+    @arm读取PLC数据时，对于“D1000”一类的地址，使用 read_dword_data函数接口时，
+        是双字模式：它会将如“D1200”，“1201”这2个地址看成一个整体取读，
+        所以在使用这个接口时，单数位地址上最好不要有值写入
+
+====  mysql 相关  =====================================
+    @访问
+        如公司测试——卓郎机子  IP：10.246.104.185
+        进入网页：10.246.104.185:8089
+    @修改启动项
+        vim /etc/rc.local
+            sleep 5s
+            /opt/app/ai-product-haijiang/ai-cotton-api-server-release/autorun.sh &
+
+    @启动和检查网页
+        进入程序目录
+            cd ai-product-haijiang-release/
+        复制sql查询部分，到真正的目录中（要加 -r）
+            cp -r ai-cotton-api-server-release/ ../../ai-product-haijiang/
+        进入sql查询部分路径
+            cd /opt/app/ai-product-haijiang/ai-cotton-api-server-release/
+        手动起服务
+            sudo ./service start
+            "@手动关服务
+            "sudo ./service stop
+        查看记录
+            cd /opt/logs/ai-product-haijiang/ai-cotton-api-server-release/
+            tail -1000f console.log
+            (要找到类似的代码，说明服务起成功了
+                [restartedMain]-INFO -com.aidolphin.ai.cotton.MainApplication-Started
+                    MainApplication in 10.086 seconds (JVM running for 11.399))
+
+    @在命令行中
+        mysql  (检验有么有mysql)
+        显示如下：
+        ERROR 1045 (28000): Access denied for user 'appuser'@'localhost' (using password: NO)
+
+        mysql -p (进入mysql,输入密码，（密码在 config--config_prod--passwd:"k...."）)
+            kt#H@s3AA&qcezJK
+
+        show databases; (查看库)(最前面要加一个空格)
+
+        从.sql文件中，复制文本，粘贴到命令行中，（推荐分段复制粘贴，便于检查错误）
+            （第一段到USE `db_cotton_local`;    贴完点击Enter键
+
+        show databases; (查看库是否更新)
+
+        从.sql文件中，复制表部分的文本，粘贴到命令行中
+
+        @ 如果需要进入某个表
+            USE `db_cotton_local`;
+        show tables; （前面要加一个空格，后面加分号）
+
+        quit(退出mysql)
+
+    @临时添加表时
+        打开SQLyog
+        创建表----利用改变表来查看其他表的属性，依照其他表创建所需对象
+        创建好后，保存
+        然后选择”备份/导出“，-“备份表作为SQL转储”--选择“结构唯一”，然后“导出”
+
+        @在导出的表里选择如下字段粘贴到原来的.sql文件里
+            DROP TABLE IF EXISTS `t_err_record`;
+
+            CREATE TABLE `t_err_record` (
+              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+              `err_code` int(11) NOT NULL DEFAULT '0' COMMENT '异常代码',
+              `err_time` timestamp(3) NOT NULL DEFAULT '2000-01-01 00:00:00.000' COMMENT '异常时间',
+              `create_time` timestamp(3) NOT NULL DEFAULT '2000-01-01 00:00:00.000' COMMENT '添加时间',
+              `update_time` timestamp(3) NOT NULL DEFAULT '2000-01-01 00:00:00.000' COMMENT '更新时间',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+    @ 设置mysql(不太清楚作用)
+        sudo vi /etc/mysql/debian.cnf
+
+            [client]
+            host     = localhost
+            user     = debian-sys-maint
+            password = 8lZWVXeSDk8EKsHE
+            socket   = /var/run/mysqld/mysqld.sock
+            [mysql_upgrade]
+            host     = localhost
+            user     = debian-sys-maint
+            password = 8lZWVXeSDk8EKsHE
+            socket   = /var/run/mysqld/mysqld.sock
+
+            mysql -u debian-sys-maint -p
+
+            8lZWVXeSDk8EKsHE
+
+            use mysql
+
+            update user set authentication_string=password(' kt#H@s3AA&qcezJK ') where user='appuser' and host='localhost'
+
+    @新的arm上，先要部署公钥
+        ssh-keygen -t rsa -C "taoxiaolin.gw@heyqu.net"
+            一直“Enter”
+            信息如下：
+                Generating public/private rsa key pair.
+                Enter file in which to save the key (/home/appuser/.ssh/id_rsa):
+                Enter passphrase (empty for no passphrase):
+                Enter same passphrase again:
+                Your identification has been saved in /home/appuser/.ssh/id_rsa.
+                Your public key has been saved in /home/appuser/.ssh/id_rsa.pub.
+                The key fingerprint is:
+                SHA256:VWevBkbgcrrm2+6GQqHGD7+Kt3EMwdmaDKUWbBLnZXk taoxiaolin.gw@heyqu.net
+                The key's randomart image is:
+                +---[RSA 2048]----+
+                |.oo +.    ..o o  |
+                |.ooB.oE  . o o . |
+                | o= +.. . + o   .|
+                | . o +.  = . . . |
+                |   .=. .S     o  |
+                |    =o.  .   .   |
+                |   ..=o o.       |
+                |   ..o+o...      |
+                |  ..oo.oo=+      |
+                +----[SHA256]-----+
+        @查看公钥，每台arm都不一样，所以网上的git账号要不断的新增
+            cd ~
+            cd .ssh/
+            ll
+            cat id_rsa.pub
+            会显示公钥：如下：（引号里所有的）
+                ""
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsuVbddo2hVI6eUDdQ0ITlx5rWcBTHC4sfM6CJkLsacDWzo0trf0FdJ
+                lTPbij90ADu9maRot0VgiT3dozZZYttccJNfGZagm9Mn9wzK23St91ehONbun64LIW/b/4X0FFSuiwtBW3N0IeQLPYGZU
+                YAEvf6vBseahVIpjvfCOzE010D7xywhJPC79NsipACANKAiPgoDthlWu4FbMROGhcS6dR8FWZM1vwWVIyvGRSBxaxabtH
+                /UNvpCphHLZ4QOkYQbCnFZ8AENTcN/uozrSe31Rmap1+7Jm3DDrqnTGSXjI00+kaNUDrW+Euqut40VPWhPdQ6Ki7Ubamb
+                noA7CpTj taoxiaolin.gw@heyqu.net
+                ""
+        @在网页上，登陆git ,在头像上点击，选中 “Settings”,进入SSH Keys ，在Key 上粘贴，Title不用管，最后add
+            arm添加git公钥完成！！！
+
+        @现在可以git了，推荐新建一个目录，现在git上的不是实时对应的
+            比如在/opt/app/的目录下，建一个test
+            cd /opt/app/test/
+            @现场不能克隆，只能拷贝，只有内网才能克隆
+            @第一次为克隆,网页上要选“SSH”，常态是“HTTPS”
+                git clone git@gitlab.gmm01.com:ai-deploy/ai-product-haijiang-release.git
+
+                （git@gitlab.gmm01.com:ai-deploy/ai-product-haijiang-release.git）
+
+                @信息如下：
+
+                    Cloning into 'ai-product-haijiang-release'...
+                    Password for 'https://Sean12345@gitlab.gmm01.com':
+                    appuser@appuser-desktop:/opt/app/test$ git clone git@gitlab.gmm01.com:ai-deploy/ai-product-haijiang-release.git
+                    Cloning into 'ai-product-haijiang-release'...
+                    remote: Counting objects: 469, done.
+                    remote: Compressing objects: 100% (376/376), done.
+                    remote: Total 469 (delta 82), reused 465 (delta 78)
+                    Receiving objects: 100% (469/469), 89.57 MiB | 938.00 KiB/s, done.
+                    Resolving deltas: 100% (82/82), done.
+
+        @已有程序时，更新git
+            cd /opt/app/test/ai-product-haijiang-release/
+            git pull
+
+====  旋转中心 相关  =====================================
+    @ # 对于角度来说，逆时针方向为正，顺时针为负
+    @ 图像中的旋转，及旋转中心
+        旋转中心不定，可以任意指定
+            在具体项目中，假定机械稳定，则对应的旋转中心，应在初始注册时换算出来，并记录
+            R(x9,y9)
+        然后，根据角度，特定的旋转中心，换算旋转后的位置，在取物体上固定点，换算位移量
+
+        解释：对于图像上的图像a1，通过旋转，得到的新的图像a2
+            要表述这个动作，首先要确认(定义)一个点，即为旋转中心--可指定
+            定下旋转中心后，先换算角度，再换算位移
+                对于不同的旋转中心，角度一致，位移会有不同。
+
+    @ 世界坐标用例中(取装卷簧盖)
+        假定 抓手在相机中的位置稳定pz0(xz,yz), 对应的初始注册图像固定点pt0(x0,y0,d0)
+        假定 当物体的固定点为pt0(x0,y0,d0)时，抓手移动固定距离len2(lx,ly) 能够精准组装
+
+        由于 抓手取物体，存在偏差，所以取完物体，拍照所得的pt1(x1,y1,d1)
+            需要，根据 d1-d0, 和R(x9,y9)，换算物体固定点，在角度d0时的坐标pt2(x2,y2,d0)
+            则，此次偏差位移量lp(x0-x2, y0-y2)
+            推出，拍完图，要让抓手位移len3 = len2 + lp, 旋转d0-d1 度
+
+        类似于取装卷黄盖
+        描述：抓手从料盘中取出物料a,但物料a对于抓手会有偏移x,y,角度d
+            假定，抓手在相机拍摄位的位置精准，则，可以标定该抓手的在相机下的旋转中心
+                ---3点求旋转中心 --标记当前物理位置，抓手的初始角度
+                记旋转中心为p(x0,y0)
+
+            假定初始注册物料位置，对应固定x9,y9,角度d9 = 0，能够精准组装
+                那么，只要换算后的世界坐标等，抓手移动(x1,y1,d1)后,成像能与注册图像一致
+                那么，实际移动(x1+x9, y1+y9, d9+d1),就能实现精准组装
+                ---换算位移
+                    要先换算以p旋转后的点，再算，整个图形的偏移
+                        这过程中，需要p,和识别图像上的某个固定点q(x2,y2)

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>添加</title>
+</head>
+
+<body>
+
+    <div>
+		<span th:text="${errMsg}" class="err_msg"></span>
+	</div>
+
+    <form class="sui-form form-horizontal" method="post" th:action="@{/bs/errRecord/add}" th:object="${record}">
+
+    
+        <div class="control-group">
+			<label class="control-label">异常代码：</label>
+			<div class="controls">
+				<input placeholder="请输入异常代码" th:field="*{errCode}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+        
+            <div class="control-group">
+                <label class="control-label">异常时间：</label>
+                <div class="controls">
+                    <input autocomplete="off" placeholder="请输入异常时间" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" th:field="*{errTime}"
+                        class="input-large input-fat input-date" type="text">
+                </div>
+            </div>
+            
+        <div class="control-group">
+			<label class="control-label">代码说明：</label>
+			<div class="controls">
+				<input placeholder="请输入代码说明" th:field="*{errInstructions}" class="input-xlarge input-fat" type="text">
+			</div>
+		</div>
+            <div class="control-group submit_btn">
+        <div class="controls">
+            <button class="sui-btn btn-bordered btn-large btn-primary" type="submit">添加</button>
+        </div>
+    </div>
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+__pycache__/
+.idea
+.pyc
+yolov3_wool_detection
+yolov3_wool_detection2
+yolov3_wool_seat_detection
+yolov3_zangmian_seat_detection
+zangmian_detection_yolov3
+zangmian_tfmodel2trtmodel/yolov3_zangmian_seat_detection

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header(title)">
+
+<meta charset="utf-8">
+<title th:replace="${title}">默认标题</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="shortcut icon" th:href="@{/resources/favicon.ico}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/css/sui/sui.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/sui/sui-append.min.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.2.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.json-2.2.min.js}"></script>
+<script type="text/javascript" th:src="@{/My97DatePicker/WdatePicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/sui.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/Util.js}"></script>
+<script>
+	var g_needReloadPage = false;
+	/**
+	 * 初始化一些jQuery方法
+	 */
+	(function($) {
+		$.fn.autoheight = function() {
+			return this.each(function() {
+				var iframe = $(this);
+				var height = iframe.contents().find('body').height() + 40;
+				iframe.height(height);
+			});
+		};
+	})(jQuery);
+</script>
+
+<style>
+.sui-main {
+	padding: 0 10px;
+}
+
+.sui-modal .modal-body {
+	min-height: 50px;
+	max-height: 420px;
+}
+
+.sui-form {
+	margin: 18px 0 !important;
+}
+
+.sui-row-fluid-search .span4 {
+	margin-left: 0;
+}
+
+.btn_operators {
+	width: 100%;
+	text-align: center;
+}
+
+.btn_operators>a {
+	display: block;
+	padding: 2px 0;
+}
+
+.records_table_head>tr>th, .records_table_record>tr>th {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.sui-table {
+	table-layout: fixed;
+}
+
+.sui-pager {
+	margin-bottom: 10px;
+	background: #f9f9f9;
+	padding: 0 10px;
+	border: 1px solid #cce1ff;
+	border-radius: 3px;
+}
+
+.sui-iframe {
+	border: 0 none;
+}
+
+.submit_form {
+	border: 1px solid #cce1ff;
+	border-radius: 3px;
+	padding: 10px 0 0;
+	margin-bottom: 10px;
+}
+
+.submit_btn {
+	width: 100%;
+	text-align: center;
+}
+
+.form-horizontal .controls>a:first-child, .form-horizontal .controls>span:first-child {
+	display: inline-block;
+	padding-top: 3px;
+}
+</style>
+</head>

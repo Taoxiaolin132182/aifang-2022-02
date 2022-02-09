@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title>点位表</title>
+</head>
+
+<body>
+
+    <div class="sui-main">
+        <ul class="sui-breadcrumb">
+			<li class="active">点位表</li>
+		</ul>
+        <!-- 搜索 -->
+        <form method="get" th:action="@{/bs/pointRecord/list}" class="sui-form form-horizontal submit_form">
+            <div class="sui-row-fluid sui-row-fluid-search">
+            
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label">自增主键：</label>
+                                <div class="controls">
+                                    <input autocomplete="off" type="text" placeholder="请输入自增主键" name="pointId" th:value="${pointId}" class="input-large input-fat">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label">拍照编号：</label>
+                                <div class="controls">
+                                    <input autocomplete="off" type="text" placeholder="请输入拍照编号" name="takePhotoId" th:value="${takePhotoId}" class="input-large input-fat">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label">图片编号：</label>
+                                <div class="controls">
+                                    <input autocomplete="off" type="text" placeholder="请输入图片编号" name="imageId" th:value="${imageId}" class="input-large input-fat">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label">状态：</label>
+                                <div class="controls">
+                                    <div class="sui-dropdown dropdown-bordered dropdown-large select">
+                                        <div class="dropdown-inner">
+                                            <a role="button" data-toggle="dropdown" href="javascript:void(0);" class="dropdown-toggle">
+                                                <input th:value="${state}" name="state" type="hidden"> <i class="caret"></i>
+                                                <span th:switch="${state}">
+                                                    <span th:case="1">新增</span>
+                                                    <span th:case="3">重复</span>
+                                                    <span th:case="4">成功抓取</span>
+                                                    <span th:case="5">来不及抓取</span>
+                                                    <span th:case="*">全部</span>
+                                                </span>
+                                            </a>
+                                            <ul role="menu" aria-labelledby="drop2" class="sui-dropdown-menu">
+                                                <li role="presentation" th:class="${state eq null} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="">全部</a></li>
+                                                <li role="presentation" th:class="${state eq 1} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="1">新增</a></li>
+                                                <li role="presentation" th:class="${state eq 3} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="3">重复</a></li>
+                                                <li role="presentation" th:class="${state eq 4} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="4">成功抓取</a></li>
+                                                <li role="presentation" th:class="${state eq 5} ? 'active'"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="5">来不及抓取</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label" for="beginCreateTime">添加时间：</label>
+                                <div class="controls">
+                                    <input autocomplete="off" class="input-large input-fat input-date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="选择开始时间" style="width:142px;" type="text" th:value="${beginCreateTime}" name="beginCreateTime" id="beginCreateTime" />
+                                    <label for="endCreateTime"> 至 </label>
+                                    <input autocomplete="off" class="input-large input-fat input-date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" placeholder="选择结束时间" style="width:142px;" type="text" th:value="${endCreateTime}" name="endCreateTime" id="endCreateTime" />
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="control-group submit_btn">
+				<div class="controls">
+					<button class="sui-btn btn-bordered btn-large btn-primary" type="submit">
+						<i class="sui-icon icon-tb-search"></i>搜索
+					</button>
+				</div>
+			</div>
+        </form>
+
+        <!-- 上分页 -->
+        <form class="sui-pager" method="get" th:action="@{/bs/pointRecord/list}" name="frmTurnPage1">
+            
+            <input type="hidden" name="pointId" th:value="${pointId}" />
+            <input type="hidden" name="takePhotoId" th:value="${takePhotoId}" />
+            <input type="hidden" name="imageId" th:value="${imageId}" />
+            <input type="hidden" name="state" th:value="${state}" />
+            <input type="hidden" name="beginCreateTime" th:value="${beginCreateTime}" />
+            <input type="hidden" name="endCreateTime" th:value="${endCreateTime}" />
+            <div class="clearfix" th:include="/common/turnPage::pager('frmTurnPage1')"></div>
+        </form>
+
+
+        <!-- 列表 -->
+                <form id="J_delForm" th:action="@{/bs/pointRecord/delRecords}">
+                    <div class="clearfix" style="margin-bottom: 10px;">
+                <div class="pull-left">
+                                <button class="sui-btn btn-bordered btn-default" type="button" onclick="Util.confirmSelectedCheckboxes('J_delForm', 'checkAll');">
+                    <i class="sui-icon icon-tb-delete"></i>删除
+                </button>
+                                <button class="sui-btn btn-bordered btn-primary" type="button" data-toggle="modal" data-target="#suiModal"
+                        onclick="g_needReloadPage = true;$('#J_modalLabel').text('新增点位表');$('#J_modalIframe').attr('src', 'showAdd');">
+                    <i class="sui-icon icon-tb-add"></i>新增
+                </button>
+                                </div>
+                            </div>
+
+            <table class="sui-table table-bordered table-zebra">
+                <thead class="records_table_head">
+                    <tr>
+                                        <th width="55">
+                        <label data-toggle="checkbox" class="checkbox-pretty inline"> <input id="checkAll" type="checkbox"
+                                onclick="if(this.checked) {Util.selectAllCheckbox(this.form);} else { Util.cancelAllCheckbox(this.form); }"><span>全选</span>
+                        </label>
+                    </th>
+                                        
+                    <th>自增主键</th>
+                    
+                    <th>拍照编号</th>
+                    
+                    <th>图片编号</th>
+                    
+                    <th>传送带速度</th>
+                    
+                    <th>点的最大x坐标</th>
+                    
+                    <th>点的最大y坐标</th>
+                    
+                    <th>点的最小x坐标</th>
+                    
+                    <th>点的最小y坐标</th>
+                    
+                    <th>点的中心x坐标</th>
+                    
+                    <th>点的中心y坐标</th>
+                    
+                    <th>状态</th>
+                    
+                    <th>是否删除</th>
+                    
+                    <th>添加时间</th>
+                    
+                    <th>更新时间</th>
+                    <th width="80">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="records_table_record" th:each="record:${pageData.resultList}">
+                                        <td>
+                        <label data-toggle="checkbox" class="checkbox-pretty inline"> <input type="checkbox" name="delIds" th:value="${record.pointId}" onclick="Util.verifyCheckAll(this.form, 'checkAll');"><span>&nbsp;</span>
+                        </label>
+                    </td>
+                                        
+        <td th:text="${record.pointId}"></td>
+        
+        <td th:text="${record.takePhotoId}"></td>
+        
+        <td th:text="${record.imageId}"></td>
+        
+        <td th:text="${record.speed}"></td>
+        
+        <td th:text="${record.pointXmax}"></td>
+        
+        <td th:text="${record.pointYmax}"></td>
+        
+        <td th:text="${record.pointXmin}"></td>
+        
+        <td th:text="${record.pointYmin}"></td>
+        
+        <td th:text="${record.pointXcenter}"></td>
+        
+        <td th:text="${record.pointYcenter}"></td>
+        
+        <td th:switch="${record.state}">
+        <span th:case="1">新增</span><span th:case="3">重复</span><span th:case="4">成功抓取</span><span th:case="5">来不及抓取</span>
+            <span th:case="*" th:text="${record.state}"></span>
+        </td>
+        
+        <td th:switch="${record.isDel}">
+        <span th:case="0">是</span><span th:case="1">否</span>
+            <span th:case="*" th:text="${record.isDel}"></span>
+        </td>
+        
+        <td th:text="${#dates.format(record.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            
+        <td th:text="${#dates.format(record.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td>
+            <div class="btn-group-vertical btn_operators">
+
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = false;$('#J_modalLabel').text('查看点位表');$('#J_modalIframe').attr('src', 'show?pointId=${record.pointId}');|">查看</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = true;$('#J_modalLabel').text('修改点位表');$('#J_modalIframe').attr('src', 'showUpd?pointId=${record.pointId}');|">修改</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = true;$('#J_modalLabel').text('复制新增点位表');$('#J_modalIframe').attr('src', 'showAdd?pointId=${record.pointId}');|">复制新增</a>
+
+
+
+
+            </div>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+                </form>
+        
+        <!-- 下分页 -->
+        <form class="sui-pager" method="get" th:action="@{/bs/pointRecord/list}" name="frmTurnPage2">
+            
+                <input type="hidden" name="pointId" th:value="${pointId}" />
+                <input type="hidden" name="takePhotoId" th:value="${takePhotoId}" />
+                <input type="hidden" name="imageId" th:value="${imageId}" />
+                <input type="hidden" name="state" th:value="${state}" />
+                <input type="hidden" name="beginCreateTime" th:value="${beginCreateTime}" />
+                <input type="hidden" name="endCreateTime" th:value="${endCreateTime}" />
+                <div class="clearfix" th:include="/common/turnPage::pager('frmTurnPage2')"></div>
+        </form>
+
+                <!-- 通用弹出层 -->
+        <div id="suiModal" tabindex="-1" role="dialog" data-hasfoot="false" data-width="normal" class="sui-modal hide">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+						<h4 id="J_modalLabel" class="modal-title">标题</h4>
+					</div>
+					<div class="modal-body">
+						<iframe class="sui-iframe" id="J_modalIframe" src="" width="100%" height="400px"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </div>
+
+    <script>
+		$('#suiModal').on('hidden', function() {
+			if (g_needReloadPage) {
+				location.reload();
+			}
+		}).on('shown', function() {
+            $(this).removeClass("hide");
+			$('#J_modalIframe').autoheight();
+		});
+	</script>
+
+</body>
+</html>

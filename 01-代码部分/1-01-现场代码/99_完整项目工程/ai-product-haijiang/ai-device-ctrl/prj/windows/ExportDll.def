@@ -1,0 +1,4 @@
+﻿LIBRARY "AIDeviceCtrlDll"
+
+EXPORTS
+	cc_use_cpu;

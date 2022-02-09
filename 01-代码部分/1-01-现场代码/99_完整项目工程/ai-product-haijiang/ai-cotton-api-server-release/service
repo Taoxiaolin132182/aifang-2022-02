@@ -1,0 +1,110 @@
+#!/bin/bash
+
+APPLICATION_NAME="ai-cotton-api-server-release"
+release_dir=$(cd $(dirname $0); pwd)
+
+check(){
+  if [ -z "$(eval echo \$$1)" ] ; then
+    eval $1='$2'
+  fi
+}
+
+safemkdir(){
+  if [ ! -d $1 ] ; then
+    mkdir -p $1
+  fi
+}
+
+killRunningPid(){
+    pid=`ps -ef|grep "java"|grep "$1"|grep -v "grep"|awk '{print $2}'`
+	if [ "$pid" = "" ] ; then
+	  echo "no process $APP_NAME $1 alive"
+	else
+	  echo "process was exist,so kill $APP_NAME $1 pid $pid now"
+	  kill -9 $pid
+	fi
+}
+
+TMP_CLASSPATH=$CLASSPATH
+
+appendClasspath(){
+    TMP_CLASSPATH=$TMP_CLASSPATH":"$1
+}
+
+#判断是否带参数，第一个参数是start|stop
+if [ $# == 2 ]; then
+  check PROJECT_ENV $2
+elif [ $# == 1 ]; then  
+  check PROJECT_ENV prod
+else
+  echo "parameter error \n example: service.sh start|stop  [ENV]  \n "
+  exit 1
+fi
+
+#判断参数是否正确
+if [ "$1" == "start" ]; then
+  echo "will run start $APP_NAME ..."
+elif [ "$1" == "stop" ]; then
+  echo "will run stop $APP_NAME ..."
+else
+  echo "parameter error \n example: service.sh start|stop  [ENV]  \n "
+  exit 1 
+fi
+
+
+#check PROFILE /opt/app/$APP_NAME/conf/profile 
+
+#if [ -f $PROFILE ] ; then
+#  . $PROFILE
+#fi
+
+#these values can be define in projectrc
+check APP_HOME ${release_dir}/
+check LIBS_HOME ${release_dir}/lib
+check LOG_HOME /opt/logs/ai-product-haijiang/ai-cotton-api-server-release
+check JAVA_HOME /opt/app/jdk
+
+#safemkdir $LOG_HOME/log
+#safemkdir $LOG_HOME/audit
+
+JAVA_HOME=/opt/app/jdk
+
+export JAVA_HOME
+echo "set JAVA_HOME=$JAVA_HOME"
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+
+#checkk PROJECT_ENV dev
+check APP_ENTRANCE com.aidolphin.ai.cotton.MainApplication
+#check APP_JVM_OPTIONS "-server -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:PermSize=64m -XX:MaxPermSize=64m"
+check APP_JVM_OPTIONS "-server -Xms256m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError -XX:+PrintGCDateStamps -XX:+UseParallelGC -XX:+UseParallelOldGC"    #for JDK8
+if [ "$1" == "start" ]
+  then
+    killRunningPid $APP_ENTRANCE
+fi
+
+for file in $LIBS_HOME/*; do
+    appendClasspath $file
+done
+
+#JAVA_OPTIONS=" $APP_JVM_OPTIONS -Dproject.home=$APP_HOME -Dproject.env=$PROJECT_ENV -Dlog.home=$LOG_HOME -Dlogback.configurationFile=$APP_HOME/conf/logback.xml -Dfile.encoding=UTF-8 -Duser.timezone=GMT+08 "
+JAVA_OPTIONS=" $APP_JVM_OPTIONS -Dspring.profiles.active=$PROJECT_ENV -Dfile.encoding=UTF-8 -Duser.timezone=GMT+08 "
+
+echo $JAVA_OPTIONS
+
+export JAVA_HOME JAVA_OPTIONS
+#export CLASSPATH=$TMP_CLASSPATH:.
+#echo $CLASSPATH
+export LANG=zh_CN
+
+
+if [ "$1" == "start" ]
+  then
+    nohup $JAVA_HOME/bin/java $JAVA_OPTIONS -cp .:./lib/* $APP_ENTRANCE >$LOG_HOME/console.log 2>&1 & 
+    echo "success start process $APP_NAME" 
+elif [ "$1" == "stop" ]
+  then 
+    killRunningPid $APP_ENTRANCE
+else 
+  echo "no supported operation..."
+fi

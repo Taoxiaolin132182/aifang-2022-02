@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title></title>
+</head>
+
+<body>
+
+    <div class="sui-main">
+        <ul class="sui-breadcrumb">
+			<li class="active"></li>
+		</ul>
+        <!-- 搜索 -->
+        <form method="get" th:action="@{/bs/errRecord/list}" class="sui-form form-horizontal submit_form">
+            <div class="sui-row-fluid sui-row-fluid-search">
+            
+                        <div class="span4">
+                            <div class="control-group">
+                                <label class="control-label">自增主键：</label>
+                                <div class="controls">
+                                    <input autocomplete="off" type="text" placeholder="请输入自增主键" name="id" th:value="${id}" class="input-large input-fat">
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="control-group submit_btn">
+				<div class="controls">
+					<button class="sui-btn btn-bordered btn-large btn-primary" type="submit">
+						<i class="sui-icon icon-tb-search"></i>搜索
+					</button>
+				</div>
+			</div>
+        </form>
+
+        <!-- 上分页 -->
+        <form class="sui-pager" method="get" th:action="@{/bs/errRecord/list}" name="frmTurnPage1">
+            
+            <input type="hidden" name="id" th:value="${id}" />
+            <div class="clearfix" th:include="/common/turnPage::pager('frmTurnPage1')"></div>
+        </form>
+
+
+        <!-- 列表 -->
+                <form id="J_delForm" th:action="@{/bs/errRecord/delRecords}">
+                    <div class="clearfix" style="margin-bottom: 10px;">
+                <div class="pull-left">
+                                <button class="sui-btn btn-bordered btn-default" type="button" onclick="Util.confirmSelectedCheckboxes('J_delForm', 'checkAll');">
+                    <i class="sui-icon icon-tb-delete"></i>删除
+                </button>
+                                <button class="sui-btn btn-bordered btn-primary" type="button" data-toggle="modal" data-target="#suiModal"
+                        onclick="g_needReloadPage = true;$('#J_modalLabel').text('新增');$('#J_modalIframe').attr('src', 'showAdd');">
+                    <i class="sui-icon icon-tb-add"></i>新增
+                </button>
+                                </div>
+                            </div>
+
+            <table class="sui-table table-bordered table-zebra">
+                <thead class="records_table_head">
+                    <tr>
+                                        <th width="55">
+                        <label data-toggle="checkbox" class="checkbox-pretty inline"> <input id="checkAll" type="checkbox"
+                                onclick="if(this.checked) {Util.selectAllCheckbox(this.form);} else { Util.cancelAllCheckbox(this.form); }"><span>全选</span>
+                        </label>
+                    </th>
+                                        
+                    <th>自增主键</th>
+                    
+                    <th>异常代码</th>
+                    
+                    <th>异常时间</th>
+                    
+                    <th>添加时间</th>
+                    
+                    <th>更新时间</th>
+                    
+                    <th>代码说明</th>
+                    <th width="80">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="records_table_record" th:each="record:${pageData.resultList}">
+                                        <td>
+                        <label data-toggle="checkbox" class="checkbox-pretty inline"> <input type="checkbox" name="delIds" th:value="${record.id}" onclick="Util.verifyCheckAll(this.form, 'checkAll');"><span>&nbsp;</span>
+                        </label>
+                    </td>
+                                        
+        <td th:text="${record.id}"></td>
+        
+        <td th:text="${record.errCode}"></td>
+        
+        <td th:text="${#dates.format(record.errTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            
+        <td th:text="${#dates.format(record.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            
+        <td th:text="${#dates.format(record.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            
+        <td th:text="${record.errInstructions}"></td>
+                <td>
+            <div class="btn-group-vertical btn_operators">
+
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = false;$('#J_modalLabel').text('查看');$('#J_modalIframe').attr('src', 'show?id=${record.id}');|">查看</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = true;$('#J_modalLabel').text('修改');$('#J_modalIframe').attr('src', 'showUpd?id=${record.id}');|">修改</a>
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suiModal" th:onclick="|javascript:g_needReloadPage = true;$('#J_modalLabel').text('复制新增');$('#J_modalIframe').attr('src', 'showAdd?id=${record.id}');|">复制新增</a>
+
+
+
+
+            </div>
+        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+                </form>
+        
+        <!-- 下分页 -->
+        <form class="sui-pager" method="get" th:action="@{/bs/errRecord/list}" name="frmTurnPage2">
+            
+                <input type="hidden" name="id" th:value="${id}" />
+                <div class="clearfix" th:include="/common/turnPage::pager('frmTurnPage2')"></div>
+        </form>
+
+                <!-- 通用弹出层 -->
+        <div id="suiModal" tabindex="-1" role="dialog" data-hasfoot="false" data-width="normal" class="sui-modal hide">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+						<h4 id="J_modalLabel" class="modal-title">标题</h4>
+					</div>
+					<div class="modal-body">
+						<iframe class="sui-iframe" id="J_modalIframe" src="" width="100%" height="400px"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </div>
+
+    <script>
+		$('#suiModal').on('hidden', function() {
+			if (g_needReloadPage) {
+				location.reload();
+			}
+		}).on('shown', function() {
+            $(this).removeClass("hide");
+			$('#J_modalIframe').autoheight();
+		});
+	</script>
+
+</body>
+</html>

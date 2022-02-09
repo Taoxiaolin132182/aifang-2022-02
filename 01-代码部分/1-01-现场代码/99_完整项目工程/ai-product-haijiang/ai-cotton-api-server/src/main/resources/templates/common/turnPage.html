@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="pager(formName)">
+
+	<div class="pull-left sui-dropdown dropdown-bordered select" style="margin: 18px 10px 18px 0;">
+		<div class="dropdown-inner">
+			<a role="button" data-toggle="dropdown" href="javascript:void(0);" class="dropdown-toggle"> <input th:value="${pageData.pageSize}" name="pageSize"
+				type="hidden" onchange="this.form.submit();"><i class="caret"></i><span th:text="|每页${pageData.pageSize}条|"></span>
+			</a>
+			<ul role="menu" aria-labelledby="drop1" class="sui-dropdown-menu">
+				<li role="presentation" th:each="onePageSize:${pageData.pageSizeOptionList}" th:class="${onePageSize == pageData.pageSize} ? 'active'"><a
+					role="menuitem" tabindex="-1" href="javascript:void(0);" th:value="${onePageSize}" th:text="|每页${onePageSize}条|"></a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="pull-right sui-pagination">
+
+		<div>
+			<span th:text="|共 ${pageData.totalCount} 条|"></span>
+		</div>
+
+		<ul>
+
+			<li class="prev"><a th:href="@{javascript:Util.turnPage(document.{formName}, 1);(formName=${formName})}"><i class="sui-icon icon-pc-prev"></i></a></li>
+
+			<li th:class="${pageData.currentPage > 1} ? 'prev' : 'prev disabled'"><a
+				th:href="@{javascript:if({currentPage} > 1){Util.turnPage(document.{formName}, {currentPage} - 1);}(formName=${formName},currentPage=${pageData.currentPage})}"><i
+					class="sui-icon icon-pc-chevron-left"></i></a></li>
+
+			<li th:each="page:${pageData.displayPageNums}" th:class="${page == pageData.currentPage} ? 'active'"><span th:if="${page == pageData.currentPage}"
+				th:text="${page}"></span> <a th:if="${page != pageData.currentPage}"
+				th:href="@{javascript:Util.turnPage(document.{formName}, {page});(formName=${formName},page=${page})}" th:text="${page}"></a></li>
+
+			<li th:class="${pageData.totalPage > pageData.currentPage} ? 'next' : 'next disabled'"><a
+				th:href="@{javascript:if({totalPage} > {currentPage}){Util.turnPage(document.{formName}, {currentPage} + 1);}(formName=${formName},totalPage=${pageData.totalPage},currentPage=${pageData.currentPage})}"><i
+					class="sui-icon icon-pc-chevron-right"></i></a></li>
+
+			<li class="next"><a th:href="@{javascript:Util.turnPage(document.{formName}, {totalPage});(formName=${formName},totalPage=${pageData.totalPage})}"><i
+					class="sui-icon icon-pc-next"></i></a></li>
+
+		</ul>
+
+		<div>
+			<span th:text="| 共 ${pageData.totalPage} 页，到第|"></span> <input type="text" class="page-num" name="currentPage" th:value="${pageData.currentPage}"> <span>页</span>
+			<button type="submit" class="sui-btn btn-bordered btn-primary">确定</button>
+		</div>
+
+	</div>
+</div>

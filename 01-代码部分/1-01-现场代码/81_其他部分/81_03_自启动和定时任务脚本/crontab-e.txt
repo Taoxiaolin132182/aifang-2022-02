@@ -1,0 +1,16 @@
+@reboot ( sleep 5 ;/usr/bin/jetson_clocks)
+
+* */3 * * *  find /mnt/data/data/image_original/ -name "*" -mtime +3 -exec rm -rf {} \;
+
+* */3 * * *  find /mnt/data/data/image/havebox/ -name "*" -mtime +3 -exec rm -rf {} \;
+
+* */3 * * *  find /mnt/data/data/image/nobox/ -name "*" -mtime +3 -exec rm -rf {} \;
+
+* */3 * * *  find /mnt/data/data/upload_image/ -name "*" -mtime +3 -exec rm -rf {} \;
+
+*/1 * * * *  /opt/app/ai-vpn-connect/run.sh > /opt/logs/vpn.log
+
+
+
+
+

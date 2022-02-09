@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify af config message</title>
+    <style>
+        table, table tr th, table tr td { border:2px solid black}
+        table{
+            border-collapse: collapse;
+            margin: 0 auto;
+            cellspacing: 2px;
+        }
+
+    </style>
+</head>
+<body>
+    {{ link1.data_1.0|safe }}
+<!--    <h2>{{ showmes }}</h2>-->
+    <form method="post" action="/show12/">
+        {% csrf_token %}
+        <h2 align="center">{{ link1.data_1.4 }}号 ARM (2)抓手 偏差补偿 </h2>
+        <table>
+        <tr>
+            <th align="right">单位:mm</th>
+            <th align="right">Camera-A</th>
+            <th align="right">Camera-B</th>
+            <th align="right">Camera-C</th>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">抓手1 的对应参数</td>
+        </tr>
+        <tr>
+            <th align="left">Claw1-X</th>
+            <!--<th align="right">{{showmes.x1a}}</th>-->
+            <th><input type="text" name="hx1a" size="5" placeholder="{{tip.tips1}}" value="{{data.claw1.x.0}}"></th>
+            <th><input type="text" name="hx1b" size="5" placeholder="{{tip.tips1}}" value="{{data.claw1.x.1}}"></th>
+            <th><input type="text" name="hx1c" size="5" placeholder="{{tip.tips1}}" value="{{data.claw1.x.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw1-Y</th>
+            <th><input type="text" name="hy1a" size="5" placeholder="{{tip.tips2}}" value="{{data.claw1.y.0}}"></th>
+            <th><input type="text" name="hy1b" size="5" placeholder="{{tip.tips2}}" value="{{data.claw1.y.1}}"></th>
+            <th><input type="text" name="hy1c" size="5" placeholder="{{tip.tips2}}" value="{{data.claw1.y.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw1-t</th>
+            <th><input type="text" name="ht1a" size="5" placeholder="{{tip.tips3}}" value="{{data.claw1.t.0}}"></th>
+            <th><input type="text" name="ht1b" size="5" placeholder="{{tip.tips3}}" value="{{data.claw1.t.1}}"></th>
+            <th><input type="text" name="ht1c" size="5" placeholder="{{tip.tips3}}" value="{{data.claw1.t.2}}"></th>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">抓手2 的对应参数</td>
+        </tr>
+        <tr>
+            <th align="left">Claw2-X</th>
+            <!--<th align="right">{{showmes.x1a}}</th>-->
+            <th><input type="text" name="hx2a" size="5" placeholder="{{tip.tips1}}" value="{{data.claw2.x.0}}"></th>
+            <th><input type="text" name="hx2b" size="5" placeholder="{{tip.tips1}}" value="{{data.claw2.x.1}}"></th>
+            <th><input type="text" name="hx2c" size="5" placeholder="{{tip.tips1}}" value="{{data.claw2.x.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw2-Y</th>
+            <th><input type="text" name="hy2a" size="5" placeholder="{{tip.tips2}}" value="{{data.claw2.y.0}}"></th>
+            <th><input type="text" name="hy2b" size="5" placeholder="{{tip.tips2}}" value="{{data.claw2.y.1}}"></th>
+            <th><input type="text" name="hy2c" size="5" placeholder="{{tip.tips2}}" value="{{data.claw2.y.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw2-t</th>
+            <th><input type="text" name="ht2a" size="5" placeholder="{{tip.tips3}}" value="{{data.claw2.t.0}}"></th>
+            <th><input type="text" name="ht2b" size="5" placeholder="{{tip.tips3}}" value="{{data.claw2.t.1}}"></th>
+            <th><input type="text" name="ht2c" size="5" placeholder="{{tip.tips3}}" value="{{data.claw2.t.2}}"></th>
+        </tr>
+        <!--<tr>
+            <td colspan="4" align="center">抓手3 的对应参数</td>
+        </tr>
+        <tr>
+            <th align="left">Claw3-X</th>
+            &lt;!&ndash;<th align="right">{{showmes.x1a}}</th>&ndash;&gt;
+            <th><input type="text" name="hx3a" size="5" placeholder="{{tip.tips1}}" value="{{data.claw3.x.0}}"></th>
+            <th><input type="text" name="hx3b" size="5" placeholder="{{tip.tips1}}" value="{{data.claw3.x.1}}"></th>
+            <th><input type="text" name="hx3c" size="5" placeholder="{{tip.tips1}}" value="{{data.claw3.x.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw3-Y</th>
+            <th><input type="text" name="hy3a" size="5" placeholder="{{tip.tips2}}" value="{{data.claw3.y.0}}"></th>
+            <th><input type="text" name="hy3b" size="5" placeholder="{{tip.tips2}}" value="{{data.claw3.y.1}}"></th>
+            <th><input type="text" name="hy3c" size="5" placeholder="{{tip.tips2}}" value="{{data.claw3.y.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw3-t</th>
+            <th><input type="text" name="ht3a" size="5" placeholder="{{tip.tips3}}" value="{{data.claw3.t.0}}"></th>
+            <th><input type="text" name="ht3b" size="5" placeholder="{{tip.tips3}}" value="{{data.claw3.t.1}}"></th>
+            <th><input type="text" name="ht3c" size="5" placeholder="{{tip.tips3}}" value="{{data.claw3.t.2}}"></th>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">抓手4 的对应参数</td>
+        </tr>
+        <tr>
+            <th align="left">Claw4-X</th>
+            &lt;!&ndash;<th align="right">{{showmes.x1a}}</th>&ndash;&gt;
+            <th><input type="text" name="hx4a" size="5" placeholder="{{tip.tips1}}" value="{{data.claw4.x.0}}"></th>
+            <th><input type="text" name="hx4b" size="5" placeholder="{{tip.tips1}}" value="{{data.claw4.x.1}}"></th>
+            <th><input type="text" name="hx4c" size="5" placeholder="{{tip.tips1}}" value="{{data.claw4.x.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw4-Y</th>
+            <th><input type="text" name="hy4a" size="5" placeholder="{{tip.tips2}}" value="{{data.claw4.y.0}}"></th>
+            <th><input type="text" name="hy4b" size="5" placeholder="{{tip.tips2}}" value="{{data.claw4.y.1}}"></th>
+            <th><input type="text" name="hy4c" size="5" placeholder="{{tip.tips2}}" value="{{data.claw4.y.2}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw4-t</th>
+            <th><input type="text" name="ht4a" size="5" placeholder="{{tip.tips3}}" value="{{data.claw4.t.0}}"></th>
+            <th><input type="text" name="ht4b" size="5" placeholder="{{tip.tips3}}" value="{{data.claw4.t.1}}"></th>
+            <th><input type="text" name="ht4c" size="5" placeholder="{{tip.tips3}}" value="{{data.claw4.t.2}}"></th>
+        </tr>-->
+        <tr bgcolor="#fffbf0">
+            <td colspan="4" align="center">
+                <input type="submit" align="center" value="保存" style="background-color:#f47983">
+            </td>
+        </tr>
+
+        </table>
+    </form>
+
+</body>
+</html>

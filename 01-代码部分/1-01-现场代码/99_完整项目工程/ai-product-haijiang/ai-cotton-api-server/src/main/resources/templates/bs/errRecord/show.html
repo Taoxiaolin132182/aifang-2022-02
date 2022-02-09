@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title></title>
+</head>
+
+<body>
+
+    <div class="sui-form form-horizontal" th:object="${record}">
+    
+        <div class="control-group">
+			<label class="control-label">自增主键：</label>
+			<div class="controls">
+				<span th:text="*{id}"></span>
+			</div>
+		</div>
+        
+        <div class="control-group">
+			<label class="control-label">异常代码：</label>
+			<div class="controls">
+				<span th:text="*{errCode}"></span>
+			</div>
+		</div>
+        
+            <div class="control-group">
+                <label class="control-label">异常时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(errTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">添加时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">更新时间：</label>
+                <div class="controls">
+                    <span th:text="*{#dates.format(updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+            </div>
+            
+        <div class="control-group">
+			<label class="control-label">代码说明：</label>
+			<div class="controls">
+				<span th:text="*{errInstructions}"></span>
+			</div>
+		</div>
+            </div>
+
+</body>
+</html>

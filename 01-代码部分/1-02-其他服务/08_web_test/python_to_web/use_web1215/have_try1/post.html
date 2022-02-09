@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/search-post/" method="post">
+        {% csrf_token %}
+        <p>抓手1偏差参数</p>
+        <input type="text" placeholder="Claw-1 X for A" name="x1a" value="{{data_list.showmes.x1a}}">
+        <input type="text" placeholder="Claw-1 Y for A" name="y1a">
+        <input type="text" placeholder="Claw-1 t for A" name="t1a">
+        <input type="submit" value="保存">
+    </form>
+
+    <p>{{ rlt }}</p>
+</body>
+</html>

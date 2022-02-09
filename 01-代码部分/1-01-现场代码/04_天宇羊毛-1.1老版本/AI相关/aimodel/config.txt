@@ -1,0 +1,35 @@
+﻿{
+    "annotation":"项目名称",
+    "project_name":"wool",
+    "annotation":"版本号",
+    "version":"2.5",
+    "annotation":"AI日志存放路径",
+    "log_save_dir":"/opt/logs/wool/aiInferServer",
+    "annotation":"模型1路径，如果配置将会加载模型并进行识别",
+    "model_core_path":"/mnt/data/data/aimodel/Awool_yolov3.pb",
+    "annotation":"模型2路径， 如果配置将会进行加载并进行识别",
+    "model_add_path":"/mnt/data/data/aimodel/Bwool_yolov3.pb",
+    "annotation":"是否保存识别结果，设置为0表示不保存，设置为1表示保存",
+    "save_result":0,
+    "annotation": "类别名称及阈值",
+    "class_name_score_factors": {"yixian":0.25, "qianhuangmao":1.1, "zhonghuangmao":0.2, "shenhuangmao":0.25, "kongqiangmao":1.1, "caogan":1.1},
+    "annotation": "模型1图片输入尺寸",
+    "image_size_core": 1280,
+    "annotation": "模型2图片输入尺寸",
+    "image_size_add": 1024,
+    "annotation": "目标物面积筛选阀值,单位是像素",
+    "area_factor": 800,
+    "annotation": "是否进行脏棉过滤，脏棉识别必须要大于一定阀值，否者认为是异纤, 如果是0，表示不进行过滤， 如果大于0，则以该阈值进行过滤",
+    "zangmian_score_factor": 0,
+    "annotation": "是否直接使用atss trt模型, 如果是0，表示使用老的， 如果大于0，则用atss trt模型infer",
+    "use_atss_trt": 1,
+    "model_atss_trt_param":{
+        "image_size": 1280,
+        "iou_thresh": 0.01,
+        "score_thresh": 0.1,
+        "model_path": "/mnt/data/data/aimodel/wool_atss_2_1015.pb",
+        "batch_size": 1,
+        "class_name_score_factors": {"yixian":0.3, "shenhuangmao":0.3}
+    }
+}
+

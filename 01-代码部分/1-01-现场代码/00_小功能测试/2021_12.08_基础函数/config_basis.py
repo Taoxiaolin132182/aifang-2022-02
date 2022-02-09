@@ -1,0 +1,1 @@
+t_str1 = "I am teacher ! "

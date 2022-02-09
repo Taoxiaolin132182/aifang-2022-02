@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/common/header::header(~{::title})">
+<title></title>
+</head>
+
+<body>
+
+	<div class="sui-main">
+		<ul class="sui-breadcrumb">
+			<li class="active">菜单</li>
+		</ul>
+
+		<table class="sui-table table-bordered table-zebra">
+			<thead class="records_table_head">
+				<th>表格名称</th>
+				<th>链接</th>
+			</thead>
+			<tbody>
+				<tr class="records_table_record">
+					<td>图片表</td>
+					<td><a href="/bs/imageRecord/list" target="_blank">/bs/imageRecord/list</a></td>
+				</tr>
+				<tr class="records_table_record">
+					<td>拍照表</td>
+					<td><a href="/bs/takePhotoRecord/list" target="_blank">/bs/takePhotoRecord/list</a></td>
+				</tr>
+				<tr class="records_table_record">
+					<td>点位表</td>
+					<td><a href="/bs/pointRecord/list" target="_blank">/bs/pointRecord/list</a></td>
+				</tr>
+				<tr class="records_table_record">
+					<td>统计点位数据</td>
+					<td><a href="/bs/pointRecord/countByTime" target="_blank">/bs/pointRecord/countByTime</a></td>
+				</tr>
+			    <tr class="records_table_record">
+					<td>异常表</td>
+					<td><a href="/bs/errRecord/list" target="_blank">/bs/errRecord/list</a></td>
+			    </tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</body>
+</html>

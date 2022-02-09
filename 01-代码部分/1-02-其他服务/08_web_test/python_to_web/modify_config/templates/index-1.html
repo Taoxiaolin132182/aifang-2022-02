@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index-1</title>
+    <style>
+        table, table tr th, table tr td { border:2px solid black}
+        table{
+            border-collapse: collapse;
+            margin: 0 auto;
+            cellspacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    {{ data_1.0|safe }} || {{ data_1.1|safe }} || {{ data_1.2|safe }} || {{ data_1.3|safe }} || {{ data_1.5|safe }}
+
+    <h1 align="center">异纤机 抓手 偏差补偿 </h1>
+    <h2 align="center"> 本页面为  ARM{{ data_1.4 }} 提供服务 </h2>
+    <pre> </pre>
+    <h2 align="center"> 当设备中一台拍摄模组对应抓手模组有 2套</h2>
+    <h2 align="center"> 请选择 {{ data_1.1|safe }}</h2>
+    <pre style="text-align:center">--------------------------------------------------------------</pre>
+    <h2 align="center"> 当设备中一台拍摄模组对应抓手模组有 4套</h2>
+    <h2 align="center"> 请选择 {{ data_1.2|safe }}</h2>
+</body>
+</html>

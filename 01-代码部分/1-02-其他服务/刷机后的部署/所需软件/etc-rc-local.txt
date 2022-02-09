@@ -1,0 +1,14 @@
+/opt/app/ai-common-upload/run.sh &
+
+mkdir -p /opt/logs/ai-product-haijiang/ai-cotton-api-server-release/
+
+/opt/app/ai-product-haijiang/ai-cotton-api-server-release/autorun.sh &
+
+#/opt/app/ai-product-haijiang/aiInferServer/run.sh &
+
+sleep 5s
+
+cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+
+#sudo HOME=/home/appuser nohup python3 ai_hj_run_service.py > /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+#sudo HOME=/home/appuser nohup python3 daemon.py > /mnt/data/opt/logs/txl01/daemon.log 2>&1 &

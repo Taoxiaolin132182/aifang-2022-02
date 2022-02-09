@@ -1,0 +1,78 @@
+
+@ 笔记本调试前的准备工作：
+    1、标定相机
+        1.1、准备触发线电源，或是供电交换机， 网线(最好相机网线)，确定光源亮度，标定板，一定高度的垫板，垫子
+            测量相机之间的距离，测量镜头到标定板的距离(工作距离)
+        1.2、配置本机IP(固定IP：172.16.101.1)
+            tp:在标定完成前，所有相机的IP可以设成同一个，方便调试
+        1.3、连上一台相机，通过映美精软件，和标定板，来调整光圈(亮度)、焦圈(清晰)
+            同时在本地建好对应的文件夹，方便管理操作
+        1.4、固定好后，拍摄25张所需照片(1颗相机需要25张+1张)
+        1.5、中间相机要拍一张标定原点的图
+            要求为，图中的标定板的线要尽可能的平行与相机
+            拍摄完，要量取某一标记点(一般为相机坐标下的左上点) 到 框架下的一个固定点的XY距离
+            同时，调整曝光(亮度降低)拍下卷尺在XY方向下的读数，来读取画面的长宽，并记录
+            把卷尺按相机的中心，世界坐标Y方向放置，保持不动， 所有相机都拍下来
+                算出各相机画面中心点之间距离，X方向要记录，Y方向忽略
+        1.6、压缩所有图片，然后进行内参标定，
+                将中间相机的标定原点图，按1、2、3命名，标定外参
+        1.7、在image2world.py 中
+                要有标定参数文件，补偿参数文件
+                记录某标定图中的四个角点，录入坐标，
+                    看生成的世界坐标点位方向，再到程序上调整方向和方向补偿数
+                    在根据实际情况添加固定点补偿数，相机间X方向插值
+                    再测试一遍，看是否符合预期
+        1.8、把相机IP改成对应网段
+
+    2、在操作界面配置网口IP
+        2.1、找到显示器，电源线，高清线，键盘，鼠标，USB拓展线
+        2.2、上网和PLC通讯网口的IP设成 192.168.1.x
+        2.3、相机网口IP： 172.16.101.1 / 172.16.102.1 / 172.16.103.1
+            网卡上距离闪烁灯最近的为1口，依次类推
+            一般A插1口，B插2口，C插3口
+        2.4、在命令行中，ifconfig
+            看通讯IP，mac地址，配入 /opt/config/mac_..
+            tcam-ctrl -l 看是否能找到所有相机
+
+    3、
+
+@ 部署的东西都放在统一的文件夹下：
+    加密后的模型文件工程
+    打包后的解密程序
+
+
+@进入目标主机后要做的操作
+    0、检测系统版本
+        pip3 list -- python库的版本
+            主要是AI需求 --  tensorrt                     (老) 5.1.6.1 / (新) 7.1.3.0
+    1、把 create_path.py、try_decode_0908.tar.gz 放入 /mnt/data/
+    2、新建目录，把解密执行文件解压到指定路径下
+        sudo python3 create_path.py
+    3、把模型移动到对应文件夹中
+    4、配置 开机启动项，定时任务
+        4.1、挂载硬盘设置
+            sudo vim /etc/fstab
+            选vim 对应的数字
+        4.2、sudo chmod 777 /etc/rc.local
+            sudo vim /etc/rc.local
+        4.3、sudo crontab -e
+
+
+
+@vim /etc/rc.locl
+#!/bin/bash
+
+#/opt/app/ai-common-upload/run.sh &
+
+mkdir -p /opt/logs/ai-product-haijiang/ai-cotton-api-server-release/
+
+/opt/app/ai-product-haijiang/ai-cotton-api-server-release/autorun.sh &
+
+#/opt/app/ai-product-haijiang/aiInferServer/run.sh &
+
+sleep 5s
+
+cd /opt/app/ai-product-haijiang/ai-hj-service/aiHjService/
+
+#sudo HOME=/home/appuser nohup python3 ai_hj_run_service.py > /mnt/data/opt/logs/txl01/ctrl.log 2>&1 &
+sudo HOME=/home/appuser nohup python3 daemon.py > /mnt/data/opt/logs/txl01/daemon.log 2>&1 &

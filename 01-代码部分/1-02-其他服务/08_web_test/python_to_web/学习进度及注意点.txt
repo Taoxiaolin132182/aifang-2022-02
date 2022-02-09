@@ -1,0 +1,115 @@
+
+@2022-1-18
+    1、django 添加IP数量限制
+        不同IP时，可将之前  超时的IP  踢下线
+    2、修改同步到 老版蓝本机(ok)
+        cd /mnt/data/data/3test_code/python_to_web/modify_config/
+        sudo python3 manage.py runserver 0.0.0.0:8000
+        老版蓝本机上的django项目 tar 打包后，能直接在新版蓝本机上使用
+
+    3、显示时间，默认是UTC 国际标准时间UTC
+        TIME_ZONE = 'Asia/Shanghai'
+
+
+2022-01-17
+    偏差参数使用说明
+        先确定抓手原点位置，X方向，Y方向
+        参数项可录入正负号：(+\-)
+        解释说明
+            X(单位:mm)：X值越大，抓手的落点就离原点越远
+            Y(单位:mm)：Y值越大，抓手抓的越晚(从抓取时机来看)
+            T(单位:s)：T值越大，抓手抓的越早(减小t参数时，抓取的点变得更前(相当于去提前抓))
+            T参数的换算公式： 目测统计后的Y方向偏差 / 传送带速度
+            传送带速度：      在PLC屏幕上的传送带频率 * 比率系数(此页会提供)
+    增加了时间锁，当超时或未登录的时候，直接跳转到登录界面，
+        所以，功能性的网页地址可以写的简单些，不怕随便登录了
+
+    研究网页访问IP获取
+        做成 仅限一人登录(在同一时间段内，防止多人篡改)
+
+2021-12-27
+    @给 html 改写for循环
+
+2021-12-23
+    @ 待研究方向
+        增加登录，锁，密码验证
+        txt记录备份
+        艾纺控制程序的更改优化
+        页面(模板的)细化
+
+
+    ARM上的django 版本不一样，windows 上的不能直接移植
+        现已知不一样的有：setting.py, urls.py,
+        视图函数(ex. search.py)只能放在urls.py 脚本统一路径下，(暂未摸索出放于其他文件夹的方法)
+            urls.py 中要 引用该脚本，规定网址路径 和调用视图函数
+        模板(ex. xxxx.html) 可以放在新建一个文件夹
+            在 setting.py 的 TEMPLATES--'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+    现有认知：
+        路由规定了一些既定的 路径 + 调用视图函数。当页面在访问路径的时候，去调用对应函数
+            视图函数中，做一些操作处理，去返回页面
+                在视图函数中，用post是从页面端取值，render是给页面传值
+                页面端操作一次，回将视图-模板调用一次
+
+    现有测试结果：
+        在ARM端，sudo python3 manage.py runserver 0.0.0.0:8000
+        本机可访问 127.0.0.1:8000/show2/
+        局域网可访问 10.264.104.110:8000/show2/  (尽管笔记本连WiFi的ip网段 和目标机不一致，但还是可以连接上)
+        VPN远程IP可访问 192.168.8.xxx:8000/show2/
+
+
+
+2021-12-20
+    跳过模型看表单
+
+2021-12-16
+    准备学 Django 模板
+        1、列表：templates 中的 runoob.html中，可以用 . 索引下标取出对应的元素。
+        2、字典：templates 中的 runoob.html中，可以用 .键 取出对应的值。
+        3、过滤器：语法模板：{{ 变量名 | 过滤器：可选参数 }}
+        4、if/else 标签
+            基本语法格式如下：
+                {% if condition %}
+                     ... display
+                {% endif %}
+        5、for 标签：{% for %} 允许我们在一个序列上迭代。
+            <ul>
+            {% for athlete in athlete_list %}
+                <li>{{ athlete.name }}</li>
+            {% endfor %}
+            </ul>
+        6、{% empty %}：可选的 {% empty %} 从句：在循环为空的时候执行（即 in 后面的参数布尔值为 False ）。
+            {% for i in listvar %}
+                {{ forloop.counter0 }}
+            {% empty %}
+                空空如也～
+            {% endfor %}
+        7、ifequal/ifnotequal 标签
+            {% ifequal %} 标签比较两个值，当他们相等时，显示在 {% ifequal %} 和 {% endifequal %} 之中所有的值。
+                {% ifequal section 'sitenews' %}
+                    <h1>Site News</h1>
+                {% else %}
+                    <h1>No News Here</h1>
+                {% endifequal %}
+        8、注释标签：Django 注释使用 {# #}。
+            {# 这是一个注释 #}
+        9、include 标签：{% include %} 标签允许在模板中包含其它的模板的内容。
+            下面这个例子都包含了 nav.html 模板：
+            {% include "nav.html" %}
+        10、csrf_token：csrf_token 用于form表单中，作用是跨站请求伪造保护。
+
+    自定义标签和过滤器
+
+
+    重载
+        父模板
+            标签 block...endblock: 父模板中的预留区域，该区域留给子模板填充差异性的内容，不同预留区域名字不能相同。
+                {% block 名称 %}
+                预留给子模板的区域，可以设置设置默认内容
+                {% endblock 名称 %}
+        子模板
+            子模板使用标签 extends 继承父模板：
+                {% extends "父模板路径"%}
+    引用静态配置
+
+http://127.0.0.1:8000/static/images/test_tree.jpeg

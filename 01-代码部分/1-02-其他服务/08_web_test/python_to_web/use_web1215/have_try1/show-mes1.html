@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show message</title>
+</head>
+<body>
+<!--    <h2>{{ showmes }}</h2>-->
+    <form method="post" action="/show1/">
+        {% csrf_token %}
+        <h1>抓手1偏差补偿</h1>
+        <table border="1px" cellspacing="0">
+        <tr>
+            <th align="right">单位:mm</th>
+            <th align="right">Camera-A</th>
+            <th align="right">Camera-B</th>
+            <th align="right">Camera-C</th>
+        </tr>
+        <tr>
+            <th align="left">Claw1-X</th>
+            <!--<th align="right">{{showmes.x1a}}</th>-->
+            <th><input type="text" name="hx1a" size="5" value="{{x1a}}"></th>
+            <th><input type="text" name="hx1b" size="5" value="{{x1b}}"></th>
+            <th><input type="text" name="hx1c" size="5" value="{{x1c}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw1-Y</th>
+            <th><input type="text" name="hy1a" size="5" placeholder="{{y1a}}" value="{{y1a}}"></th>
+            <th><input type="text" name="hy1b" size="5" placeholder="{{y1b}}" value="{{y1b}}"></th>
+            <th><input type="text" name="hy1c" size="5" placeholder="{{y1c}}" value="{{y1c}}"></th>
+        </tr>
+        <tr>
+            <th align="left">Claw1-t</th>
+            <th><input type="text" name="ht1a" size="5" placeholder="{{t1a}}" value="{{t1a}}"></th>
+            <th><input type="text" name="ht1b" size="5" placeholder="{{t1b}}" value="{{t1b}}"></th>
+            <th><input type="text" name="ht1c" size="5" placeholder="{{t1c}}" value="{{t1c}}"></th>
+        </tr>
+
+    </table>
+        <input type="submit" value="保存">
+    </form>
+
+</body>
+</html>

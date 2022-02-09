@@ -1,0 +1,131 @@
+# coding=utf-8
+
+====================================================================
+
+@ pycharm 的用法
+    1、在 settings- project:xxxx -project interpreter
+        选择配置 环境
+            可以 选择 初始的 python路径，在命令行中pip3 就是装在这上面的
+    2、工具栏一类的字体 显示大小
+            setting-Appearance-use...
+       代码里的字体 显示大小
+            setting-Editor-font
+    3、python脚本 编码格式
+        在第一 或 第二 行： # coding=utf-8
+    4、python 解释器
+        #!/usr/bin/python 相当于写死了 python 路径。
+        #!/usr/bin/env python 会去环境设置寻找 python 目录，可以增强代码的可移植性，推荐这种写法
+        分成两种情况：
+            (1)如果调用 python 脚本时，使用:
+                python script.py
+                #!/usr/bin/python 被忽略，等同于注释
+            (2)如果调用python脚本时，使用:
+                ./script.py
+                #!/usr/bin/python 指定解释器的路径
+            PS：shell 脚本中在第一行也有类似的声明。
+
+@ 类中定义多进程
+    1、在 init中，不能定义普通的queue, 否则会报错
+    2、logging 可以在不同进程中使用
+    3、
+    4、
+
+
+@ logging配置文件
+    [handlers] 任意命名，但必须要有root对应的一个handler --如：hpr
+
+    [logger_temp1]  # 对应的 logger
+    level=INFO
+    handlers=hp1    # 对应的 handler
+    qualname=temp1   # 对应的 logger
+    propagate=1     # 0则不继承到root, 1是继承到root
+
+
+@ 读写文件时，
+    尽量用 with open("文件"，“打开类型”) as f:
+
+    会帮我们自动关闭文件
+    https://blog.csdn.net/xrinosvip/article/details/82019844
+
+@ json.load()  和 json.loads()
+    1、json.load()  # 读取文件
+        with open(path_txt1, "rb") as f_str:
+            json.load(f_str)
+    2、json.loads()  # 读取字符串
+        with open(path_txt1, "rb") as f_str:
+            now_mess = f_str.read()
+            json.loads(now_mess)
+
+
+
+@ 写 while 循环时，
+    需要加time.sleep(0.001) -- 防止CPU占满
+        从而阻塞主线程中的其他函数
+
+@快捷键
+    Ctrl +Insert 复制
+    Shift + Insert 粘贴
+
+    windows 下保存：Ctrl +S
+
+@列表指定位置插入元素
+	l1.insert[0,str] #0是位置，str是要插入的元素
+
+@列表中删除某个元素
+	l1.remove(str)
+
+@判断元素是否在列表中
+	if xxx in l1:
+
+@copy
+	需要先import copy
+	    xxx=copy.deepcopy(yyy) #xxx与yyy只是元素上一样，更改后不相关
+
+@主函数的写法
+	if __name__ == '__main__':
+
+@随机数
+	from random import randint
+	    xx = randint(300,2200) #返回一个再300-2200的整数，int型
+
+@字典
+	xxx['key'] = value
+	xxx.get('key') = value
+	#这2个写法一样
+
+@换行
+	\n
+
+@打印
+	print('原先Y：{}--\n新的Y：{}--\n距离：{}'.format(xx1,xx2,xx3))
+
+@保留几位小数
+	round(float(xx),3)  #将xx保留3位小数
+	print('%.3f'%xx,'%.4f'%yy)  #将xx保留3位小数,将yy保留4位小数
+
+@数学-指数
+	a = pow(xx,2)  #将xx平方
+	b = pow(xx,0.5)   #将xx开方
+
+@ 微小量
+    1e-3：表示一个微小值，有3个0构成的0.001。
+    7e-9：表示有9个0构成的0.000000007。
+    10e-60：表示有60个0构成的0.000……0001。
+    xe-y：表示有y个0构成的0.000……000x。
+
+@ 平面3点求圆心
+    p1(x1,y1), p2(x2,y2), p3(x3,y3),
+
+    圆心公式：O(a,b)   (x-a)^2 + (y-b)^2 = r^2
+    一般公式：x^2 + y^2 + Dx + Ey + F = 0
+
+    O(x0, y0) : x0 = -D/2, y0 = -E/2
+    R = pow((D^2 + E^2 -4F),0.5) / 2
+
+    将p1,p2,p3 带入一般公式，带入计算
+        其中 a = x1 -x2, b = y1 -y2, c = x1 -x3, d = y1 -y3,
+            q = x1^2 + y1^2 - x2^2 - y2^2
+            p = x1^2 + y1^2 - x3^2 - y3^2
+            divisor = bc -ad
+        -D/2 = (b*p - d*q)/(divisor*2)
+        -E/2 = (c*q - a*p)/(divisor*2)

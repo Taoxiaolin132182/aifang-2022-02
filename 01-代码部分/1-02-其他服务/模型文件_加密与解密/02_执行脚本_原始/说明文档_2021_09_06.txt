@@ -1,0 +1,121 @@
+# 项目暂定放在 /mnt/data/data/2test_remove
+    sudo mkdir -p /mnt/data/data/2test_remove
+    sudo chmod -R 777 /2test_remove/
+
+# 配置文件放在aimodel下
+
+
+
+@@@ 2022-01-04
+    重新调试日志：
+        1、现场部署
+            1.1、创建解密路径
+                sudo mkdir -p /mnt/data/data/2test_remove
+                sudo chmod -R 777 /2test_remove/
+            1.2、把 解密程序的tar文件传到上述路径下
+                tar -zxPf try_decode_1029.tar.gz
+            1.3、把 运行指令 写入python文件
+                str_cmd1 = "/mnt/data/data/2test_remove/try_decode/decode_model > /opt/logs/txl01/decode.log 2>&1 &"
+                os.system(str_cmd1)
+            1.4、把删除模型文件的逻辑位置提前，加载好就删除，减少模型的暴露时间
+
+        2、在公司加密
+            2.1、 原始模型、cfg_decode.py 放在 /mnt/data/data/aimodel/
+            2.2、 创建到 /mnt/data/data/2test_remove/d_decode/
+                    把 tar_or_code.py 放入改文件夹
+                    sudo python3 tar_or_code.py    (执行打包加密的程序)
+            2.3、把加密后的模型  xxxx.des3 拷贝到现场
+
+
+@ 加密
+    tar -zcPf - model.plan|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=model_a.des3
+@ 打包可执行程序-解密程序
+    cxfreeze /mnt/data/data/2test_remove/d_decode/decode_model.py --target-dir /mnt/data/data/2test_remove/try_decode
+@ 正常打包压缩
+    # 相对路径--默认
+    tar -zcf try_decode_0908.tar.gz try_decode/
+    # 绝对路径--要加P
+    tar -zcPf try_decode_0908.tar.gz /mnt/data/data/2test_remove/try_decode/
+@ 正常解压
+    # 相对路径--默认
+    tar -zxPf try_decode_0908.tar.gz
+    # 绝对路径--要加P
+    tar -zxPf /mnt/data/data/2test_remove/try_decode_0908.tar.gz
+
+
+@@@@@AI模型开机加密
+##加密打包
+tar -zcf - Awool_yolov3.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=tianyu_AI_test.des3
+tar -zcf - cotton_model.pb|openssl des3 -salt -pbkdf2 -k 'W!e@l&c#^$o%m*e'|dd of=wuxi_AI_test.des3
+
+
+@linux 上打包python文件
+cxfreeze /mnt/data/data/1test_write/test01_AImodel.py --target-dir  /mnt/data/data/1test_write/b_test0112
+# 有用
+cxfreeze /mnt/data/data/2test_remove/d_decode/decode_model.py --target-dir /mnt/data/data/2test_remove/try_decode
+
+@在公司测试机上（个人测试-常州卓郎）
+	将原始.py文件，拖进	 /mnt/data/data/2test_write/
+	cd /mnt/data/data/2test_write/
+
+	cxfreeze /mnt/data/data/2test_write/cotton_AImodel.py --target-dir  /mnt/data/data/2test_write/b_test0112
+
+	tar -zcvf 0129_cotton_and_wool_run_aimodel.tar.gz b_test0112/
+
+		cxfreeze /mnt/data/data/2test_write/wool_AImodel.py --target-dir  /mnt/data/data/2test_write/c_test0112
+		tar -zcvf 0129_wool_run_aimodel.tar.gz c_test0112/
+
+@进目标远程主机，
+	cd /media/data/0114_test_AI_find/
+	将打包文件拖进去，
+	解压文件
+	tar zxvf run_aimodel.tar.gz
+	cd b_test0112/
+	sudo ./test01_AImodel
+
+
+	cd /media/data/model/v2.5_20201203
+
+sleep 12s
+
+#进入解密路径
+cd /mnt/data/data/2test_remove/b_test0112/
+
+#起解密程序指令
+sudo HOME=/home/appuser nohup ./cotton_AImodel > /opt/logs/txl01/decode.log 2>&1 &
+
+
+sleep 12s
+
+#进入解密路径
+cd /mnt/data/data/2test_remove/c_test0112/
+
+#起解密程序指令
+sudo HOME=/home/appuser nohup ./wool_AImodel > /opt/logs/txl01/decode.log 2>&1 &
+
+
+
+
+@ 安装cx_Freeze
+    我要打包的环境是Linux+Python3，故根据情况我们采用cx_Freeze打包程序
+
+    Python3程序打包步骤：
+    1、下载cx_Freeze-4.3.4.tar.gz源码
+    2、解压源码到某个目录
+    3、打开终端到解压目录
+    4、执行python3 setup.py build
+        这编译会出错
+        查了一下 网上有修改setup.py  将其中的if not vars.get("Py_ENABLE_SHARED", 0):修改成if True：
+        就可以了
+    5、执行安装命令sudo python3 setup.py install
+    6、此时再次打开一个终端，输入命令：cxfreeze --help有内容说明安装
+    7、打包命令输入：
+
+    查询版本：
+        cxfreeze --version
+    打包文件（包含运行需要的文件）：
+        cxfreeze ~/Desktop/Nt2000_Python1/Nt_Main.py --target-dir ~/Desktop/setup
+        格式为：cxfreeze 文件绝对路径 --target-dir 打包到目标可执行文件夹路径
+
+    打包成一个可执行文件命令：
+        cxfreeze D:/hello.py --target-dir D:/123 --no-copy-deps
