@@ -1,0 +1,30 @@
+
+name: "model_atss_detection"
+platform: "tensorrt_plan"
+max_batch_size: 1
+version_policy: { specific { versions: [1] }}
+input [
+  {
+    name: "input_data"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [ 3, 1280, 1280]
+  }
+]
+output [
+  {
+    name: "logits"
+    data_type: TYPE_FP32
+    dims: [ 33600, 3 ]
+   },
+     {
+    name: "bbox_reg"
+    data_type: TYPE_FP32
+    dims: [ 33600, 4 ]
+   },
+     {
+    name: "centerness"
+    data_type: TYPE_FP32
+    dims: [ 33600, 1 ]
+   }
+]

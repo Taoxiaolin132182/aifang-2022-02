@@ -79,8 +79,15 @@ def get_pid():
     pid_parent = os.getppid()
     print("本程序进程：{}".format([pid_child, pid_parent]))
 
+
+def list_test1():
+    list1 = [1,2,3,4,5]
+    list2 = list1[:1]
+    print(list2)
+
 def main_func1():
-    calculate1_22_0125()
+    list_test1()
+    # calculate1_22_0125()
     # get_pid()
     # calculate2()
     # test_time_print()

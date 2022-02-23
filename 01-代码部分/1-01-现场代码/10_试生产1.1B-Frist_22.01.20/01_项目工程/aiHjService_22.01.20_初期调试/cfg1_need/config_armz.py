@@ -5,6 +5,7 @@
 ARM_number = 1  # ARM 1号
 Path_upload = "ssc_1.1B_arm1_"  # 上传图片路径标记
 Mechine_function = "claw"  # 设备模式  claw - 抓手模式， gas - 喷气模式
+Check_exist_wool = False  # True:需要检测羊毛有无， False:不检测羊毛有无
 If_need_PLC = True  # True:正常使用PLC， False:屏蔽PLC相关功能
 If_test_model = 2  # 1:正常模式， 2:测试夹爪模式
 If_decode_model = True  # True:正常使用删除模型， False:屏蔽 删除模型功能---不删除
@@ -107,6 +108,7 @@ AI_model_detection = [
 ]
 # 模型：1:无锡远纺的，2：三丝棉、羊绒，3：羊毛双模型
 AI_model_choose = 2
+AI_color_label = False  # True : 使用异纤颜色分类模型，False ： 不使用(一般不使用)
 # AI_model_cfg_path = "/mnt/data/data/aimodel/20210813_yangrong_model/wool_jetpack44_v1_0_trt_config.json"
 AI_model_cfg_path = "/mnt/data/data/aimodel/wxmf_sansimian_20220106/cotton_jetpack44_v1_0_trt_config.json"
 # AI_model_cfg_path = "/mnt/data/data/aimodel/wxmf_sansimian_20210816/cotton_jetpack44_v1_0_trt_config.json"

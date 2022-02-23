@@ -1,0 +1,46 @@
+{
+    "annotation":"项目名称",
+    "project_name":"wool",
+    "annotation":"版本号",
+    "version":"2.6.2",
+    "annotation":"使用什么网络，例如： ATSS, YOLO3, 主要这两种模型数据处理方式不一样",
+    "detectionNmae": "YOLO3",
+
+    "model_detection_core": {
+      "image_input_size": [1280, 1280],
+      "iou_thresh": 0.1,
+      "score_thresh": 0.05,
+      "model_name": "model_detection_core",
+      "shared_memory": 0,
+      "annotation": "将某些类别的阈值乘以10倍, 0是yixian",
+      "need_10": [0]
+    },
+    "model_atss_detection": {
+      "image_input_size": [1280, 1280],
+      "iou_thresh": 0.1,
+      "score_thresh": 0.25,
+      "model_name": "",
+      "shared_memory": 0
+    },
+    "model_detection_add": {
+      "image_input_size": [1024, 1024],
+      "iou_thresh": 0.1,
+      "score_thresh": 0.05,
+      "model_name": "model_detection_add",
+      "shared_memory": 0
+    },
+    "trtServerModelParam": {
+      "serverModelPath": "/mnt/data/data/aimodel/wool_double_model_20210812/trt_model",
+      "tritonServer": "/opt/tritonserver/tritonserver/install/bin/tritonserver",
+      "http_port": 9998,
+      "grpc_port": 9999,
+      "timeInterval": 1,
+      "allTime": 60
+    },
+    "annotation":"两个模型都是六类",
+    "class_name_score_factors": {"yixian":0.25, "qianhuangmao":1.1, "zhonghuangmao":0.2, "shenhuangmao":0.25, "kongqiangmao":1.1, "caogan":1.1},
+    "area_factor": 0,
+    "zangmian_score_factor": 0,
+    "annotation":"是否保存识别结果，设置为0表示不保存，设置为1表示保存, 内部调试",
+    "save_result":1
+}

@@ -37,10 +37,12 @@
 
     @ 在命令行中可视化 配置网口 IP
         在 sudo su
-            root 用户
+            进入root 用户
+            退出 exit
         nmtui
             进入IP配置页面
-            需要设置 mtu 172.16.101.1/24 [X]  最后激活该网口
+            需要设置 mtu 172.16.101.1/24 (自动连接选项里：按空格，调整成[X])  最后激活该网口
+            本机网口还要在 gateway 和 dns 上 添加 192.168.1.11 (路由器IP地址)
             参考文档：https://blog.csdn.net/sinat_38353045/article/details/87252573
     @ 查看cpu 的占用率
         jtop
@@ -58,6 +60,13 @@
                 install bluedroid_pm /bin/false
         修改完成的blacklist.conf 文件 在 80_其他部分/81_03_自启动.../blacklist.conf
         问题网址：https://forums.developer.nvidia.com/t/agx-xavier-reboots-after-1-core-cpu-loads-100/166906/23?page=2
+
+    @ putty 作为免费且开源的老牌 SSH 客户端，PuTTY 经常用于 Windows 下连接管理远程服务器
+
+    @ cd 等只读错误
+        cd /opt-bash: cannot create temp file for here-document: Read-only file system
+        可能原因，是嘉伟那边备份镜像的时候，把系统调整成只读模式，但没有调回来，
+        措施：重启就好了
 
     @打包
         tar -zcvf xxx.tar.gz xxxx(dir)
@@ -475,7 +484,42 @@
         git submodule update
 
 ====  github 相关  =====================================
+    1、继续研究 Github 相关
+        在笔记本里的有2个git 账户
+            先 clone
+                git clone git@github_self:Taoxiaolin132182/My_code_record.git
 
+            直接以某个文件夹为仓库时
+                先初始化版本库
+                    git init
+                添加远程仓库
+                    git remote add origin git@github_self:Taoxiaolin132182/aifang-2022-02.git
+                    所以在新增仓库的时候，git@后面修改成 .ssh的host文件的host值
+
+            拉取远程仓库
+                git pull origin main  或是 git pull origin master
+
+            向远程仓库推送
+                git add .  (. 是把文件夹里面的所有文件都加载进来)
+                git commit -m "update-xxx" (引号里是注释)
+                第一次推送的时候要添加远程的代码库到配置
+                    git remote add origin git@github_self:xxxx.git
+                git push origin main
+    2、github 连接不稳定的应对方法
+        在 C:\Windows\System32\drivers\etc\hosts
+            以文本文件打开
+        在 https://www.ipaddress.com/
+            填入 github.com  显示出的对应IP 填写在上面的hosts文件内 (以这个为主)
+            填入 github.global.ssl.fastly.net  显示出的对应IP 填写在上面的hosts文件内
+        也可以根据帖子：  https://www.cnblogs.com/wanpi/p/14668174.html
+            在这个页面上 https://ipaddress.com/website/assets-cdn.github.com
+            在hosts 上添加
+                185.199.108.153	assets-cdn.github.com
+                185.199.109.153	assets-cdn.github.com
+                185.199.110.153	assets-cdn.github.com
+                185.199.111.153	assets-cdn.github.com
+
+            打开命令行 输入： ipconfig /flushdns
 
 
 
@@ -665,6 +709,7 @@
 	    触发模式（mode）:要是 on
 	    触发来源：software 是软件-触发
 		     line1 是触发线-触发
+    相机触发线的使用， 要使用触发线标签的 2，3 两根线
 
     @现场现象：
 	    当相机触发接受方式为“上升沿”，无人为触发时，可能是电压扰动，相机会被时不时的触发拍照

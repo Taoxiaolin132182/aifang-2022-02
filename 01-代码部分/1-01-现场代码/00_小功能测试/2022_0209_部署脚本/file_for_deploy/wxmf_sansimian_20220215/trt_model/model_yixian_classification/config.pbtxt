@@ -1,0 +1,20 @@
+
+name: "model_yixian_classification"
+platform: "tensorrt_plan"
+max_batch_size: 1
+version_policy: { specific { versions: [1] }}
+input [
+  {
+    name: "input_data"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [ 3, 128, 128 ]
+  }
+]
+output [
+  {
+    name: "output_data"
+    data_type: TYPE_FP32
+    dims: [ 4 ]
+   }
+]
